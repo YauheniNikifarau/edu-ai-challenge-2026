@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 24px;
+  background-color: var(--color-bg-empty);
+  border-radius: var(--border-radius-card);
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  margin-top: 16px;
+}
+
+.icon {
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
+}

@@ -1,0 +1,320 @@
+{
+  "employees": [
+    {
+      "id": "emp_001",
+      "name": "Liam Hart",
+      "avatar": "https://randomuser.me/api/portraits/men/32.jpg",
+      "jobTitle": "Software Engineer",
+      "department": "ENG.NA.PLATFORM.A1",
+      "activities": [
+        { "id": "act_001", "title": "[EDU] TypeScript Advanced Patterns", "category": "Public Speaking", "date": "18-Dec-2025", "year": 2025, "quarter": 4, "points": 32 },
+        { "id": "act_002", "title": "[EDU] Docker Fundamentals Workshop", "category": "Public Speaking", "date": "05-Nov-2025", "year": 2025, "quarter": 4, "points": 32 },
+        { "id": "act_003", "title": "[EDU] GraphQL Best Practices", "category": "Public Speaking", "date": "22-Oct-2025", "year": 2025, "quarter": 4, "points": 32 },
+        { "id": "act_004", "title": "[EDU] Clean Code Principles", "category": "Public Speaking", "date": "14-Sep-2025", "year": 2025, "quarter": 3, "points": 32 },
+        { "id": "act_005", "title": "[EDU] Node.js Performance Tuning", "category": "Public Speaking", "date": "03-Aug-2025", "year": 2025, "quarter": 3, "points": 32 },
+        { "id": "act_006", "title": "[EDU] React State Management", "category": "Public Speaking", "date": "25-Jul-2025", "year": 2025, "quarter": 3, "points": 32 },
+        { "id": "act_007", "title": "[LAB] Mentoring of Mikalai", "category": "Education", "date": "10-Jun-2025", "year": 2025, "quarter": 2, "points": 64 },
+        { "id": "act_008", "title": "[EDU] CI/CD Pipeline Design", "category": "Public Speaking", "date": "28-May-2025", "year": 2025, "quarter": 2, "points": 32 },
+        { "id": "act_009", "title": "[EDU] API Security Essentials", "category": "Public Speaking", "date": "12-Apr-2025", "year": 2025, "quarter": 2, "points": 32 },
+        { "id": "act_010", "title": "[UNI] Guest Lecture at State Technical University", "category": "University Partners", "date": "18-Mar-2025", "year": 2025, "quarter": 1, "points": 32 },
+        { "id": "act_011", "title": "[EDU] Database Indexing Strategies", "category": "Public Speaking", "date": "05-Feb-2025", "year": 2025, "quarter": 1, "points": 32 },
+        { "id": "act_012", "title": "[LAB] Onboarding of Daria", "category": "Education", "date": "20-Jan-2025", "year": 2025, "quarter": 1, "points": 64 },
+        { "id": "act_013", "title": "[EDU] Microservices Architecture", "category": "Public Speaking", "date": "10-Nov-2024", "year": 2024, "quarter": 4, "points": 32 },
+        { "id": "act_014", "title": "[EDU] JavaScript News Digest", "category": "Public Speaking", "date": "15-Aug-2024", "year": 2024, "quarter": 3, "points": 32 },
+        { "id": "act_015", "title": "[LAB] Mentoring of Pavel", "category": "Education", "date": "20-Apr-2024", "year": 2024, "quarter": 2, "points": 64 },
+        { "id": "act_016", "title": "[UNI] Career Fair Presentation", "category": "University Partners", "date": "10-Mar-2024", "year": 2024, "quarter": 1, "points": 32 }
+      ]
+    },
+    {
+      "id": "emp_002",
+      "name": "Noah Bennett",
+      "avatar": "https://randomuser.me/api/portraits/men/45.jpg",
+      "jobTitle": "Group Manager",
+      "department": "OPS.EU.MGMT.G3",
+      "activities": [
+        { "id": "act_017", "title": "[EDU] Agile Ceremonies Deep Dive", "category": "Public Speaking", "date": "20-Nov-2025", "year": 2025, "quarter": 4, "points": 32 },
+        { "id": "act_018", "title": "[LAB] Mentoring of Alesia", "category": "Education", "date": "15-Oct-2025", "year": 2025, "quarter": 4, "points": 64 },
+        { "id": "act_019", "title": "[EDU] Tech Interview Preparation", "category": "Public Speaking", "date": "08-Sep-2025", "year": 2025, "quarter": 3, "points": 32 },
+        { "id": "act_020", "title": "[UNI] Internship Program Introduction", "category": "University Partners", "date": "12-Jun-2025", "year": 2025, "quarter": 2, "points": 32 },
+        { "id": "act_021", "title": "[EDU] Python for Backend Developers", "category": "Public Speaking", "date": "25-May-2025", "year": 2025, "quarter": 2, "points": 32 },
+        { "id": "act_022", "title": "[LAB] Onboarding of Kristina", "category": "Education", "date": "10-Apr-2025", "year": 2025, "quarter": 2, "points": 64 },
+        { "id": "act_023", "title": "[EDU] Vue.js Crash Course", "category": "Public Speaking", "date": "20-Feb-2025", "year": 2025, "quarter": 1, "points": 32 },
+        { "id": "act_024", "title": "[EDU] Clean Code Principles", "category": "Public Speaking", "date": "14-Nov-2024", "year": 2024, "quarter": 4, "points": 32 },
+        { "id": "act_025", "title": "[LAB] Mentoring of Ivan", "category": "Education", "date": "18-Jul-2024", "year": 2024, "quarter": 3, "points": 64 },
+        { "id": "act_026", "title": "[UNI] Workshop for Final Year Students", "category": "University Partners", "date": "22-Mar-2024", "year": 2024, "quarter": 1, "points": 32 }
+      ]
+    },
+    {
+      "id": "emp_003",
+      "name": "Emma Collins",
+      "avatar": "https://randomuser.me/api/portraits/women/28.jpg",
+      "jobTitle": "Lead QA Engineer",
+      "department": "QA.NA.AUTOMATION.T1",
+      "activities": [
+        { "id": "act_027", "title": "[EDU] Docker Fundamentals Workshop", "category": "Public Speaking", "date": "10-Dec-2025", "year": 2025, "quarter": 4, "points": 32 },
+        { "id": "act_028", "title": "[LAB] Mentoring of Sergei", "category": "Education", "date": "18-Nov-2025", "year": 2025, "quarter": 4, "points": 64 },
+        { "id": "act_029", "title": "[EDU] API Security Essentials", "category": "Public Speaking", "date": "22-Oct-2025", "year": 2025, "quarter": 4, "points": 32 },
+        { "id": "act_030", "title": "[EDU] CI/CD Pipeline Design", "category": "Public Speaking", "date": "05-Sep-2025", "year": 2025, "quarter": 3, "points": 32 },
+        { "id": "act_031", "title": "[LAB] Onboarding of Nikita", "category": "Education", "date": "14-Jul-2025", "year": 2025, "quarter": 3, "points": 64 },
+        { "id": "act_032", "title": "[UNI] Open Day Presentation", "category": "University Partners", "date": "30-May-2025", "year": 2025, "quarter": 2, "points": 16 },
+        { "id": "act_033", "title": "[EDU] React State Management", "category": "Public Speaking", "date": "08-Mar-2025", "year": 2025, "quarter": 1, "points": 32 },
+        { "id": "act_034", "title": "[EDU] TypeScript Advanced Patterns", "category": "Public Speaking", "date": "20-Nov-2024", "year": 2024, "quarter": 4, "points": 32 },
+        { "id": "act_035", "title": "[LAB] Mentoring of Hanna", "category": "Education", "date": "25-Sep-2024", "year": 2024, "quarter": 3, "points": 64 }
+      ]
+    },
+    {
+      "id": "emp_004",
+      "name": "Oliver Hayes",
+      "avatar": "https://randomuser.me/api/portraits/men/12.jpg",
+      "jobTitle": "Lead QA Engineer",
+      "department": "QA.EU.AUTOMATION.T2",
+      "activities": [
+        { "id": "act_036", "title": "[EDU] Database Indexing Strategies", "category": "Public Speaking", "date": "02-Dec-2025", "year": 2025, "quarter": 4, "points": 32 },
+        { "id": "act_037", "title": "[LAB] Mentoring of Tomas", "category": "Education", "date": "14-Nov-2025", "year": 2025, "quarter": 4, "points": 64 },
+        { "id": "act_038", "title": "[EDU] Microservices Architecture", "category": "Public Speaking", "date": "10-Oct-2025", "year": 2025, "quarter": 4, "points": 32 },
+        { "id": "act_039", "title": "[EDU] Node.js Performance Tuning", "category": "Public Speaking", "date": "18-Aug-2025", "year": 2025, "quarter": 3, "points": 32 },
+        { "id": "act_040", "title": "[UNI] Career Fair Presentation", "category": "University Partners", "date": "14-Jun-2025", "year": 2025, "quarter": 2, "points": 32 },
+        { "id": "act_041", "title": "[EDU] GraphQL Best Practices", "category": "Public Speaking", "date": "05-Apr-2025", "year": 2025, "quarter": 2, "points": 32 },
+        { "id": "act_042", "title": "[LAB] Onboarding of Lubov", "category": "Education", "date": "10-Feb-2025", "year": 2025, "quarter": 1, "points": 64 },
+        { "id": "act_043", "title": "[EDU] JavaScript News Digest", "category": "Public Speaking", "date": "08-Dec-2024", "year": 2024, "quarter": 4, "points": 32 }
+      ]
+    },
+    {
+      "id": "emp_005",
+      "name": "Ava Turner",
+      "avatar": "https://randomuser.me/api/portraits/women/44.jpg",
+      "jobTitle": "QA Engineer",
+      "department": "QA.AS.MANUAL.T1",
+      "activities": [
+        { "id": "act_044", "title": "[LAB] Mentoring of Dmitri", "category": "Education", "date": "25-Nov-2025", "year": 2025, "quarter": 4, "points": 64 },
+        { "id": "act_045", "title": "[EDU] Vue.js Crash Course", "category": "Public Speaking", "date": "12-Oct-2025", "year": 2025, "quarter": 4, "points": 32 },
+        { "id": "act_046", "title": "[LAB] Onboarding of Olga", "category": "Education", "date": "08-Sep-2025", "year": 2025, "quarter": 3, "points": 64 },
+        { "id": "act_047", "title": "[EDU] Agile Ceremonies Deep Dive", "category": "Public Speaking", "date": "20-Jul-2025", "year": 2025, "quarter": 3, "points": 32 },
+        { "id": "act_048", "title": "[UNI] Workshop for Final Year Students", "category": "University Partners", "date": "10-Jun-2025", "year": 2025, "quarter": 2, "points": 32 },
+        { "id": "act_049", "title": "[EDU] CI/CD Pipeline Design", "category": "Public Speaking", "date": "20-Feb-2025", "year": 2025, "quarter": 1, "points": 32 },
+        { "id": "act_050", "title": "[LAB] Mentoring of Felix", "category": "Education", "date": "15-Nov-2024", "year": 2024, "quarter": 4, "points": 64 },
+        { "id": "act_051", "title": "[EDU] Tech Interview Preparation", "category": "Public Speaking", "date": "10-Jun-2024", "year": 2024, "quarter": 2, "points": 32 }
+      ]
+    },
+    {
+      "id": "emp_006",
+      "name": "Ethan Brooks",
+      "avatar": "https://randomuser.me/api/portraits/men/55.jpg",
+      "jobTitle": "Software Engineer",
+      "department": "ENG.EU.BACKEND.G2",
+      "activities": [
+        { "id": "act_052", "title": "[EDU] PowerPoint Karaoke #3: How I once slept through the chimes at midnight", "category": "Public Speaking", "date": "16-Dec-2025", "year": 2025, "quarter": 4, "points": 8 },
+        { "id": "act_053", "title": "[EDU] PHP Repository Pattern", "category": "Public Speaking", "date": "24-Nov-2025", "year": 2025, "quarter": 4, "points": 32 },
+        { "id": "act_054", "title": "[EDU] PHP News Digest", "category": "Public Speaking", "date": "13-Sep-2025", "year": 2025, "quarter": 3, "points": 32 },
+        { "id": "act_055", "title": "[LAB] Mentoring of Pavel Ufimcev", "category": "Education", "date": "17-Jun-2025", "year": 2025, "quarter": 2, "points": 64 },
+        { "id": "act_056", "title": "[LAB] Mentoring of Raman Rusak", "category": "Education", "date": "12-Jun-2025", "year": 2025, "quarter": 2, "points": 64 },
+        { "id": "act_057", "title": "[EDU] PHP News Digest", "category": "Public Speaking", "date": "27-May-2025", "year": 2025, "quarter": 2, "points": 32 },
+        { "id": "act_058", "title": "[EDU] PHP WPML", "category": "Public Speaking", "date": "27-May-2025", "year": 2025, "quarter": 2, "points": 32 },
+        { "id": "act_059", "title": "[EDU] PHP quiz questions review (part 2)", "category": "Public Speaking", "date": "17-Mar-2025", "year": 2025, "quarter": 1, "points": 16 },
+        { "id": "act_060", "title": "[EDU] PHP quiz question review (part 1)", "category": "Public Speaking", "date": "03-Mar-2025", "year": 2025, "quarter": 1, "points": 16 }
+      ]
+    },
+    {
+      "id": "emp_007",
+      "name": "Mia Foster",
+      "avatar": "https://randomuser.me/api/portraits/women/15.jpg",
+      "jobTitle": "HR Manager",
+      "department": "HR.GLOBAL.PEOPLE.O1",
+      "activities": [
+        { "id": "act_061", "title": "[LAB] Onboarding of Roman", "category": "Education", "date": "18-Dec-2025", "year": 2025, "quarter": 4, "points": 64 },
+        { "id": "act_062", "title": "[EDU] Agile Ceremonies Deep Dive", "category": "Public Speaking", "date": "10-Nov-2025", "year": 2025, "quarter": 4, "points": 32 },
+        { "id": "act_063", "title": "[UNI] Internship Program Introduction", "category": "University Partners", "date": "25-Aug-2025", "year": 2025, "quarter": 3, "points": 32 },
+        { "id": "act_064", "title": "[LAB] Mentoring of Anastasia", "category": "Education", "date": "14-Jun-2025", "year": 2025, "quarter": 2, "points": 64 },
+        { "id": "act_065", "title": "[EDU] Python for Backend Developers", "category": "Public Speaking", "date": "10-Mar-2025", "year": 2025, "quarter": 1, "points": 32 },
+        { "id": "act_066", "title": "[LAB] Mentoring of Boris", "category": "Education", "date": "20-Oct-2024", "year": 2024, "quarter": 4, "points": 64 }
+      ]
+    },
+    {
+      "id": "emp_008",
+      "name": "Sophia Reed",
+      "avatar": "https://randomuser.me/api/portraits/women/22.jpg",
+      "jobTitle": "Business Analyst",
+      "department": "BA.NA.PRODUCT.G1",
+      "activities": [
+        { "id": "act_067", "title": "[EDU] Tech Interview Preparation", "category": "Public Speaking", "date": "15-Dec-2025", "year": 2025, "quarter": 4, "points": 32 },
+        { "id": "act_068", "title": "[LAB] Mentoring of Mikhail", "category": "Education", "date": "10-Oct-2025", "year": 2025, "quarter": 4, "points": 64 },
+        { "id": "act_069", "title": "[UNI] Open Day Presentation", "category": "University Partners", "date": "12-Sep-2025", "year": 2025, "quarter": 3, "points": 16 },
+        { "id": "act_070", "title": "[EDU] Vue.js Crash Course", "category": "Public Speaking", "date": "18-Jul-2025", "year": 2025, "quarter": 3, "points": 32 },
+        { "id": "act_071", "title": "[EDU] JavaScript News Digest", "category": "Public Speaking", "date": "05-May-2025", "year": 2025, "quarter": 2, "points": 32 },
+        { "id": "act_072", "title": "[LAB] Onboarding of Kateryna", "category": "Education", "date": "08-Feb-2025", "year": 2025, "quarter": 1, "points": 64 },
+        { "id": "act_073", "title": "[EDU] GraphQL Best Practices", "category": "Public Speaking", "date": "05-Dec-2024", "year": 2024, "quarter": 4, "points": 32 }
+      ]
+    },
+    {
+      "id": "emp_009",
+      "name": "Lucas Ward",
+      "avatar": "https://randomuser.me/api/portraits/men/67.jpg",
+      "jobTitle": "DevOps Engineer",
+      "department": "OPS.NA.INFRA.G1",
+      "activities": [
+        { "id": "act_074", "title": "[EDU] CI/CD Pipeline Design", "category": "Public Speaking", "date": "08-Dec-2025", "year": 2025, "quarter": 4, "points": 32 },
+        { "id": "act_075", "title": "[EDU] Docker Fundamentals Workshop", "category": "Public Speaking", "date": "15-Nov-2025", "year": 2025, "quarter": 4, "points": 32 },
+        { "id": "act_076", "title": "[LAB] Mentoring of Stepan", "category": "Education", "date": "20-Sep-2025", "year": 2025, "quarter": 3, "points": 64 },
+        { "id": "act_077", "title": "[EDU] Microservices Architecture", "category": "Public Speaking", "date": "05-Jul-2025", "year": 2025, "quarter": 3, "points": 32 },
+        { "id": "act_078", "title": "[EDU] API Security Essentials", "category": "Public Speaking", "date": "10-Mar-2025", "year": 2025, "quarter": 1, "points": 32 },
+        { "id": "act_079", "title": "[LAB] Onboarding of Viktor", "category": "Education", "date": "18-Jan-2025", "year": 2025, "quarter": 1, "points": 64 },
+        { "id": "act_080", "title": "[EDU] Docker Fundamentals Workshop", "category": "Public Speaking", "date": "22-Aug-2024", "year": 2024, "quarter": 3, "points": 32 }
+      ]
+    },
+    {
+      "id": "emp_010",
+      "name": "Isabella Cruz",
+      "avatar": "https://randomuser.me/api/portraits/women/36.jpg",
+      "jobTitle": "UX Designer",
+      "department": "DESIGN.US.UX.G1",
+      "activities": [
+        { "id": "act_081", "title": "[EDU] Vue.js Crash Course", "category": "Public Speaking", "date": "20-Nov-2025", "year": 2025, "quarter": 4, "points": 32 },
+        { "id": "act_082", "title": "[LAB] Mentoring of Elena", "category": "Education", "date": "05-Oct-2025", "year": 2025, "quarter": 4, "points": 64 },
+        { "id": "act_083", "title": "[UNI] Guest Lecture at State Technical University", "category": "University Partners", "date": "15-Aug-2025", "year": 2025, "quarter": 3, "points": 32 },
+        { "id": "act_084", "title": "[EDU] React State Management", "category": "Public Speaking", "date": "10-May-2025", "year": 2025, "quarter": 2, "points": 32 },
+        { "id": "act_085", "title": "[EDU] TypeScript Advanced Patterns", "category": "Public Speaking", "date": "14-Feb-2025", "year": 2025, "quarter": 1, "points": 32 },
+        { "id": "act_086", "title": "[LAB] Onboarding of Lena", "category": "Education", "date": "10-Nov-2024", "year": 2024, "quarter": 4, "points": 64 }
+      ]
+    },
+    {
+      "id": "emp_011",
+      "name": "James Porter",
+      "avatar": "https://randomuser.me/api/portraits/men/23.jpg",
+      "jobTitle": "Software Engineer",
+      "department": "ENG.NA.FRONTEND.G1",
+      "activities": [
+        { "id": "act_087", "title": "[EDU] Node.js Performance Tuning", "category": "Public Speaking", "date": "05-Dec-2025", "year": 2025, "quarter": 4, "points": 32 },
+        { "id": "act_088", "title": "[LAB] Mentoring of Liudmila", "category": "Education", "date": "12-Oct-2025", "year": 2025, "quarter": 4, "points": 64 },
+        { "id": "act_089", "title": "[UNI] Career Fair Presentation", "category": "University Partners", "date": "18-Aug-2025", "year": 2025, "quarter": 3, "points": 32 },
+        { "id": "act_090", "title": "[EDU] JavaScript News Digest", "category": "Public Speaking", "date": "15-Apr-2025", "year": 2025, "quarter": 2, "points": 32 },
+        { "id": "act_091", "title": "[EDU] Python for Backend Developers", "category": "Public Speaking", "date": "22-Jan-2025", "year": 2025, "quarter": 1, "points": 32 },
+        { "id": "act_092", "title": "[LAB] Onboarding of Natalia", "category": "Education", "date": "08-Sep-2024", "year": 2024, "quarter": 3, "points": 64 }
+      ]
+    },
+    {
+      "id": "emp_012",
+      "name": "Charlotte Hayes",
+      "avatar": "https://randomuser.me/api/portraits/women/52.jpg",
+      "jobTitle": "Product Manager",
+      "department": "PM.US.CORE.G1",
+      "activities": [
+        { "id": "act_093", "title": "[EDU] Agile Ceremonies Deep Dive", "category": "Public Speaking", "date": "18-Nov-2025", "year": 2025, "quarter": 4, "points": 32 },
+        { "id": "act_094", "title": "[UNI] Internship Program Introduction", "category": "University Partners", "date": "10-Sep-2025", "year": 2025, "quarter": 3, "points": 32 },
+        { "id": "act_095", "title": "[LAB] Mentoring of Daria", "category": "Education", "date": "20-Jul-2025", "year": 2025, "quarter": 3, "points": 64 },
+        { "id": "act_096", "title": "[EDU] Vue.js Crash Course", "category": "Public Speaking", "date": "15-Mar-2025", "year": 2025, "quarter": 1, "points": 32 },
+        { "id": "act_097", "title": "[EDU] Tech Interview Preparation", "category": "Public Speaking", "date": "10-Nov-2024", "year": 2024, "quarter": 4, "points": 32 },
+        { "id": "act_098", "title": "[LAB] Onboarding of Ivan", "category": "Education", "date": "05-Jun-2024", "year": 2024, "quarter": 2, "points": 64 }
+      ]
+    },
+    {
+      "id": "emp_013",
+      "name": "Benjamin Scott",
+      "avatar": "https://randomuser.me/api/portraits/men/38.jpg",
+      "jobTitle": "Senior Software Engineer",
+      "department": "ENG.EU.BACKEND.G3",
+      "activities": [
+        { "id": "act_099", "title": "[EDU] Database Indexing Strategies", "category": "Public Speaking", "date": "12-Dec-2025", "year": 2025, "quarter": 4, "points": 32 },
+        { "id": "act_100", "title": "[LAB] Mentoring of Oleg", "category": "Education", "date": "18-Oct-2025", "year": 2025, "quarter": 4, "points": 64 },
+        { "id": "act_101", "title": "[EDU] React State Management", "category": "Public Speaking", "date": "15-Jun-2025", "year": 2025, "quarter": 2, "points": 32 },
+        { "id": "act_102", "title": "[UNI] Open Day Presentation", "category": "University Partners", "date": "10-Apr-2025", "year": 2025, "quarter": 2, "points": 16 },
+        { "id": "act_103", "title": "[EDU] Clean Code Principles", "category": "Public Speaking", "date": "08-Jan-2025", "year": 2025, "quarter": 1, "points": 32 },
+        { "id": "act_104", "title": "[LAB] Onboarding of Tatiana", "category": "Education", "date": "12-Jul-2024", "year": 2024, "quarter": 3, "points": 64 }
+      ]
+    },
+    {
+      "id": "emp_014",
+      "name": "Amelia Brooks",
+      "avatar": "https://randomuser.me/api/portraits/women/63.jpg",
+      "jobTitle": "Data Engineer",
+      "department": "DATA.NA.PIPELINE.G1",
+      "activities": [
+        { "id": "act_105", "title": "[EDU] Python for Backend Developers", "category": "Public Speaking", "date": "22-Nov-2025", "year": 2025, "quarter": 4, "points": 32 },
+        { "id": "act_106", "title": "[LAB] Mentoring of Sergei", "category": "Education", "date": "15-Sep-2025", "year": 2025, "quarter": 3, "points": 64 },
+        { "id": "act_107", "title": "[EDU] API Security Essentials", "category": "Public Speaking", "date": "10-Jul-2025", "year": 2025, "quarter": 3, "points": 32 },
+        { "id": "act_108", "title": "[UNI] Workshop for Final Year Students", "category": "University Partners", "date": "20-May-2025", "year": 2025, "quarter": 2, "points": 32 },
+        { "id": "act_109", "title": "[EDU] Microservices Architecture", "category": "Public Speaking", "date": "10-Feb-2025", "year": 2025, "quarter": 1, "points": 32 }
+      ]
+    },
+    {
+      "id": "emp_015",
+      "name": "Henry Walker",
+      "avatar": "https://randomuser.me/api/portraits/men/71.jpg",
+      "jobTitle": "Lead Software Engineer",
+      "department": "ENG.US.PLATFORM.G1",
+      "activities": [
+        { "id": "act_110", "title": "[EDU] GraphQL Best Practices", "category": "Public Speaking", "date": "08-Nov-2025", "year": 2025, "quarter": 4, "points": 32 },
+        { "id": "act_111", "title": "[LAB] Mentoring of Kateryna", "category": "Education", "date": "22-Aug-2025", "year": 2025, "quarter": 3, "points": 64 },
+        { "id": "act_112", "title": "[UNI] Guest Lecture at State Technical University", "category": "University Partners", "date": "14-Jun-2025", "year": 2025, "quarter": 2, "points": 32 },
+        { "id": "act_113", "title": "[EDU] TypeScript Advanced Patterns", "category": "Public Speaking", "date": "20-Feb-2025", "year": 2025, "quarter": 1, "points": 32 },
+        { "id": "act_114", "title": "[EDU] Node.js Performance Tuning", "category": "Public Speaking", "date": "10-Oct-2024", "year": 2024, "quarter": 4, "points": 32 }
+      ]
+    },
+    {
+      "id": "emp_016",
+      "name": "Emily Price",
+      "avatar": "https://randomuser.me/api/portraits/women/41.jpg",
+      "jobTitle": "QA Engineer",
+      "department": "QA.EU.MANUAL.G2",
+      "activities": [
+        { "id": "act_115", "title": "[EDU] Clean Code Principles", "category": "Public Speaking", "date": "14-Oct-2025", "year": 2025, "quarter": 4, "points": 32 },
+        { "id": "act_116", "title": "[LAB] Onboarding of Andrei", "category": "Education", "date": "20-Aug-2025", "year": 2025, "quarter": 3, "points": 64 },
+        { "id": "act_117", "title": "[UNI] Career Fair Presentation", "category": "University Partners", "date": "08-May-2025", "year": 2025, "quarter": 2, "points": 32 },
+        { "id": "act_118", "title": "[EDU] JavaScript News Digest", "category": "Public Speaking", "date": "12-Jan-2025", "year": 2025, "quarter": 1, "points": 32 },
+        { "id": "act_119", "title": "[LAB] Mentoring of Aleksei", "category": "Education", "date": "18-Jun-2024", "year": 2024, "quarter": 2, "points": 64 }
+      ]
+    },
+    {
+      "id": "emp_017",
+      "name": "Daniel Carter",
+      "avatar": "https://randomuser.me/api/portraits/men/82.jpg",
+      "jobTitle": "Software Engineer",
+      "department": "ENG.NA.FRONTEND.G2",
+      "activities": [
+        { "id": "act_120", "title": "[EDU] Docker Fundamentals Workshop", "category": "Public Speaking", "date": "05-Nov-2025", "year": 2025, "quarter": 4, "points": 32 },
+        { "id": "act_121", "title": "[LAB] Mentoring of Masha", "category": "Education", "date": "10-Sep-2025", "year": 2025, "quarter": 3, "points": 64 },
+        { "id": "act_122", "title": "[EDU] Agile Ceremonies Deep Dive", "category": "Public Speaking", "date": "15-Jul-2025", "year": 2025, "quarter": 3, "points": 32 },
+        { "id": "act_123", "title": "[UNI] Open Day Presentation", "category": "University Partners", "date": "10-Mar-2025", "year": 2025, "quarter": 1, "points": 16 },
+        { "id": "act_124", "title": "[EDU] Vue.js Crash Course", "category": "Public Speaking", "date": "15-Aug-2024", "year": 2024, "quarter": 3, "points": 32 }
+      ]
+    },
+    {
+      "id": "emp_018",
+      "name": "Grace Mitchell",
+      "avatar": "https://randomuser.me/api/portraits/women/77.jpg",
+      "jobTitle": "Business Analyst",
+      "department": "BA.EU.ANALYTICS.G1",
+      "activities": [
+        { "id": "act_125", "title": "[EDU] Tech Interview Preparation", "category": "Public Speaking", "date": "20-Oct-2025", "year": 2025, "quarter": 4, "points": 32 },
+        { "id": "act_126", "title": "[LAB] Mentoring of Yaroslav", "category": "Education", "date": "15-Aug-2025", "year": 2025, "quarter": 3, "points": 64 },
+        { "id": "act_127", "title": "[UNI] Internship Program Introduction", "category": "University Partners", "date": "10-Jun-2025", "year": 2025, "quarter": 2, "points": 32 },
+        { "id": "act_128", "title": "[EDU] Python for Backend Developers", "category": "Public Speaking", "date": "08-Jan-2025", "year": 2025, "quarter": 1, "points": 32 }
+      ]
+    },
+    {
+      "id": "emp_019",
+      "name": "Michael Adams",
+      "avatar": "https://randomuser.me/api/portraits/men/14.jpg",
+      "jobTitle": "Software Engineer",
+      "department": "ENG.US.FRONTEND.G1",
+      "activities": [
+        { "id": "act_129", "title": "[EDU] React State Management", "category": "Public Speaking", "date": "10-Nov-2025", "year": 2025, "quarter": 4, "points": 32 },
+        { "id": "act_130", "title": "[LAB] Mentoring of Oksana", "category": "Education", "date": "22-Sep-2025", "year": 2025, "quarter": 3, "points": 64 },
+        { "id": "act_131", "title": "[EDU] Clean Code Principles", "category": "Public Speaking", "date": "08-May-2025", "year": 2025, "quarter": 2, "points": 32 },
+        { "id": "act_132", "title": "[UNI] Workshop for Final Year Students", "category": "University Partners", "date": "12-Mar-2025", "year": 2025, "quarter": 1, "points": 32 }
+      ]
+    },
+    {
+      "id": "emp_020",
+      "name": "Chloe Bennett",
+      "avatar": "https://randomuser.me/api/portraits/women/88.jpg",
+      "jobTitle": "Software Engineer",
+      "department": "ENG.EU.BACKEND.G4",
+      "activities": [
+        { "id": "act_133", "title": "[EDU] API Security Essentials", "category": "Public Speaking", "date": "18-Dec-2025", "year": 2025, "quarter": 4, "points": 32 },
+        { "id": "act_134", "title": "[LAB] Mentoring of Vadim", "category": "Education", "date": "10-Oct-2025", "year": 2025, "quarter": 4, "points": 64 },
+        { "id": "act_135", "title": "[EDU] Database Indexing Strategies", "category": "Public Speaking", "date": "15-Jun-2025", "year": 2025, "quarter": 2, "points": 32 },
+        { "id": "act_136", "title": "[UNI] Career Fair Presentation", "category": "University Partners", "date": "20-Feb-2025", "year": 2025, "quarter": 1, "points": 32 }
+      ]
+    }
+  ]
+}

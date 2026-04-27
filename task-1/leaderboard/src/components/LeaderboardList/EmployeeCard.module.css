@@ -1,0 +1,242 @@
+.card {
+  padding: 16px 20px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-card);
+  background: var(--color-bg-card);
+  cursor: pointer;
+  outline: none;
+  transition: box-shadow 150ms ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-card);
+}
+
+.card:focus-visible {
+  box-shadow: 0 0 0 2px var(--color-accent-blue);
+}
+
+.cardExpanded {
+  border-color: var(--color-accent-blue);
+  box-shadow: 0 0 0 1px var(--color-accent-blue);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.rank {
+  width: 28px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.identity {
+  flex: 1;
+  min-width: 0;
+}
+
+.name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.jobTitle {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.stats {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.iconGroup {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: default;
+}
+
+.iconWrap {
+  display: flex;
+  align-items: center;
+  color: var(--color-accent-blue);
+}
+
+.iconCount {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+}
+
+.tooltip {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-text-primary);
+  color: #fff;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 120ms ease;
+}
+
+.iconGroup:hover .tooltip {
+  opacity: 1;
+}
+
+.tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 4px solid transparent;
+  border-top-color: var(--color-text-primary);
+}
+
+.divider {
+  width: 1px;
+  height: 32px;
+  background-color: var(--color-border);
+  flex-shrink: 0;
+}
+
+.total {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  flex-shrink: 0;
+  min-width: 70px;
+}
+
+.totalLabel {
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+}
+
+.totalScore {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.totalValue {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-accent-blue);
+}
+
+.chevron {
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
+  transition: transform 200ms ease;
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+.expanded {
+  padding-top: 4px;
+}
+
+@media (max-width: 768px) {
+  .card {
+    padding: 12px 14px;
+  }
+
+  .header {
+    display: grid;
+    grid-template-columns: 28px 44px 1fr auto;
+    grid-template-rows: auto auto;
+    column-gap: 10px;
+    row-gap: 8px;
+    align-items: center;
+  }
+
+  .rank {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: start;
+    padding-top: 2px;
+  }
+
+  .avatar {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .identity {
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .chevron {
+    grid-column: 4;
+    grid-row: 1;
+    align-self: start;
+    padding-top: 2px;
+  }
+
+  /* icons row spans from avatar column to end */
+  .stats {
+    grid-column: 2 / 5;
+    grid-row: 2;
+    gap: 12px;
+  }
+
+  /* hide divider and total on mobile — total is not shown in original */
+  .divider {
+    display: none;
+  }
+
+  .total {
+    display: none;
+  }
+
+  .name {
+    font-size: 15px;
+    white-space: normal;
+  }
+
+  .jobTitle {
+    font-size: 12px;
+    white-space: normal;
+  }
+
+  .tooltip {
+    display: none;
+  }
+}

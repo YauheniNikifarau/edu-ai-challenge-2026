@@ -1,0 +1,16 @@
+.podium {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 10px;
+  padding: 40px 0 0;
+}
+
+@media (max-width: 768px) {
+  .podium {
+    padding: 24px 0 0;
+    gap: 10px;
+      flex-flow: column;
+      align-items: center;
+  }
+}
