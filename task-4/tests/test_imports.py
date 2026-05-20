@@ -78,3 +78,25 @@ def test_only_tools_and_resources_import_mcp():
             f"{path.relative_to(SRC_ROOT.parent.parent)} must not import 'mcp' "
             f"(only tools.py and resources.py are allowed to)"
         )
+
+
+# ---------------------------------------------------------------------------
+# AC-6: domain/ and scheduler/ must not import time, datetime, or random
+# ---------------------------------------------------------------------------
+
+def test_domain_no_time_datetime_random():
+    domain_dir = SRC_ROOT / "domain"
+    for path in domain_dir.rglob("*.py"):
+        forbidden = {"time", "datetime", "random"} & imports_of(path)
+        assert not forbidden, (
+            f"{path.relative_to(SRC_ROOT.parent.parent)} imports forbidden modules: {forbidden}"
+        )
+
+
+def test_scheduler_no_time_datetime_random():
+    scheduler_dir = SRC_ROOT / "scheduler"
+    for path in scheduler_dir.rglob("*.py"):
+        forbidden = {"time", "datetime", "random"} & imports_of(path)
+        assert not forbidden, (
+            f"{path.relative_to(SRC_ROOT.parent.parent)} imports forbidden modules: {forbidden}"
+        )

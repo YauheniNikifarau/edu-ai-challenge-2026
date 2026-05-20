@@ -1,6 +1,6 @@
 # Story 1.3: Domain Models, Time Model & In-Memory State Seam
 
-Status: ready-for-dev
+Status: review
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -22,45 +22,45 @@ so that later stories have a stable, immutable data model and a clear mutation b
 
 ## Tasks / Subtasks
 
-- [ ] **Task 1 — Populate `src/atc_mcp/time_model.py`** (AC: 4)
-  - [ ] Add module-level docstring as the invariant contract (see Dev Notes §time_model.py spec below).
-  - [ ] Add `Seconds = int` type alias.
-  - [ ] Add no other imports (especially NOT `time`, `datetime`, `os`). The file must stay clean of any stdlib time imports so later `test_imports.py` assertions pass.
+- [x] **Task 1 — Populate `src/atc_mcp/time_model.py`** (AC: 4)
+  - [x] Add module-level docstring as the invariant contract (see Dev Notes §time_model.py spec below).
+  - [x] Add `Seconds = int` type alias.
+  - [x] Add no other imports (especially NOT `time`, `datetime`, `os`). The file must stay clean of any stdlib time imports so later `test_imports.py` assertions pass.
 
-- [ ] **Task 2 — Populate `src/atc_mcp/domain/models.py`** (AC: 1, 2, 3)
-  - [ ] Define supporting enums first (they have no dependencies): `FlightState(StrEnum)`, `OperationType(StrEnum)`, `Priority(StrEnum)`.
-  - [ ] Define `RunwayRequirements` model (`min_length_m: int = Field(gt=0)`).
-  - [ ] Define `Runway` model (`id: str`, `length_m: int = Field(gt=0)`). **See note below about `config.py` import.**
-  - [ ] Define `Flight` model with all fields per spec (see Dev Notes §Flight model spec).
-  - [ ] Define `Placement` model with all fields per spec.
-  - [ ] Define `Schedule` model (`placements: tuple[Placement, ...]`, `unscheduled: tuple[Flight, ...]`, `completion_time_seconds: int | None = None`).
-  - [ ] Define `BottleneckResult` model with all fields per spec.
-  - [ ] Apply `model_config = ConfigDict(frozen=True, extra="forbid")` to every `BaseModel`. **Do NOT apply `extra="forbid"` to enums — only to Pydantic `BaseModel` subclasses.**
-  - [ ] No imports of `mcp`, `os`, `time`, `datetime`, `random` — the import-discipline tests will catch violations.
+- [x] **Task 2 — Populate `src/atc_mcp/domain/models.py`** (AC: 1, 2, 3)
+  - [x] Define supporting enums first (they have no dependencies): `FlightState(StrEnum)`, `OperationType(StrEnum)`, `Priority(StrEnum)`.
+  - [x] Define `RunwayRequirements` model (`min_length_m: int = Field(gt=0)`).
+  - [x] Define `Runway` model (`id: str`, `length_m: int = Field(gt=0)`). **See note below about `config.py` import.**
+  - [x] Define `Flight` model with all fields per spec (see Dev Notes §Flight model spec).
+  - [x] Define `Placement` model with all fields per spec.
+  - [x] Define `Schedule` model (`placements: tuple[Placement, ...]`, `unscheduled: tuple[Flight, ...]`, `completion_time_seconds: int | None = None`).
+  - [x] Define `BottleneckResult` model with all fields per spec.
+  - [x] Apply `model_config = ConfigDict(frozen=True, extra="forbid")` to every `BaseModel`. **Do NOT apply `extra="forbid"` to enums — only to Pydantic `BaseModel` subclasses.**
+  - [x] No imports of `mcp`, `os`, `time`, `datetime`, `random` — the import-discipline tests will catch violations.
 
-- [ ] **Task 3 — Populate `src/atc_mcp/domain/state.py`** (AC: 5)
-  - [ ] Define `AppState` class with fields `flights: dict[str, Flight]` and `latest_schedule: Schedule | None`.
-  - [ ] Implement all five methods: `add_flight`, `get_flight`, `replace_flights_after_schedule`, `set_latest_schedule`, `reset` (see Dev Notes §AppState spec).
-  - [ ] Create module-level singleton: `state = AppState()`.
-  - [ ] No imports of `mcp`, `os`, `time`, `datetime`, `random`.
+- [x] **Task 3 — Populate `src/atc_mcp/domain/state.py`** (AC: 5)
+  - [x] Define `AppState` class with fields `flights: dict[str, Flight]` and `latest_schedule: Schedule | None`.
+  - [x] Implement all five methods: `add_flight`, `get_flight`, `replace_flights_after_schedule`, `set_latest_schedule`, `reset` (see Dev Notes §AppState spec).
+  - [x] Create module-level singleton: `state = AppState()`.
+  - [x] No imports of `mcp`, `os`, `time`, `datetime`, `random`.
 
-- [ ] **Task 4 — Extend `tests/test_imports.py`** (AC: 6)
-  - [ ] Add a new test (or parametrize the existing `domain/`+`scheduler/` assertion) that checks no `.py` file in `domain/` or `scheduler/` imports `time`, `datetime`, or `random` (by top-level imported name via AST, same approach as existing test).
-  - [ ] Verify `pytest -q tests/test_imports.py` still passes.
-  - [ ] **Do NOT** change the existing `mcp`/`os` assertions — extend only.
+- [x] **Task 4 — Extend `tests/test_imports.py`** (AC: 6)
+  - [x] Add a new test (or parametrize the existing `domain/`+`scheduler/` assertion) that checks no `.py` file in `domain/` or `scheduler/` imports `time`, `datetime`, or `random` (by top-level imported name via AST, same approach as existing test).
+  - [x] Verify `pytest -q tests/test_imports.py` still passes.
+  - [x] **Do NOT** change the existing `mcp`/`os` assertions — extend only.
 
-- [ ] **Task 5 — Create `tests/test_domain_models.py`** (AC: 7)
-  - [ ] Test `FlightState` values: assert `set(FlightState) == {"queued", "scheduled", "unschedulable", "cancelled"}`.
-  - [ ] Test `Flight` rejects unknown fields: `Flight(flight_number="F1", operation_type="arrival", priority="high", _extra_field="x")` raises `ValidationError`.
-  - [ ] Test `Flight` is frozen: constructing a valid `Flight` then attempting `flight.state = "scheduled"` raises `ValidationError` (Pydantic frozen model exception).
-  - [ ] Test `AppState.reset()`: add a flight + set a schedule, call `reset()`, assert `state.flights == {}` and `state.latest_schedule is None`.
-  - [ ] Test `AppState.add_flight` / `get_flight` round-trip.
-  - [ ] Test `AppState.replace_flights_after_schedule` replaces the entire dict.
-  - [ ] Run `pytest -q tests/test_domain_models.py` and confirm it passes.
+- [x] **Task 5 — Create `tests/test_domain_models.py`** (AC: 7)
+  - [x] Test `FlightState` values: assert `set(FlightState) == {"queued", "scheduled", "unschedulable", "cancelled"}`.
+  - [x] Test `Flight` rejects unknown fields: `Flight(flight_number="F1", operation_type="arrival", priority="high", _extra_field="x")` raises `ValidationError`.
+  - [x] Test `Flight` is frozen: constructing a valid `Flight` then attempting `flight.state = "scheduled"` raises `ValidationError` (Pydantic frozen model exception).
+  - [x] Test `AppState.reset()`: add a flight + set a schedule, call `reset()`, assert `state.flights == {}` and `state.latest_schedule is None`.
+  - [x] Test `AppState.add_flight` / `get_flight` round-trip.
+  - [x] Test `AppState.replace_flights_after_schedule` replaces the entire dict.
+  - [x] Run `pytest -q tests/test_domain_models.py` and confirm it passes.
 
-- [ ] **Task 6 — Smoke-test full import chain** (AC: 1–6)
-  - [ ] Run `pytest -q` from `task-4/` and confirm all tests pass (at minimum `test_imports.py` and `test_domain_models.py`).
-  - [ ] Verify `python -c "from atc_mcp.domain.models import Flight, FlightState, Schedule, Placement, Runway, BottleneckResult; from atc_mcp.domain.state import state; from atc_mcp.time_model import Seconds; print('OK')"` prints `OK` without errors.
+- [x] **Task 6 — Smoke-test full import chain** (AC: 1–6)
+  - [x] Run `pytest -q` from `task-4/` and confirm all tests pass (at minimum `test_imports.py` and `test_domain_models.py`).
+  - [x] Verify `python -c "from atc_mcp.domain.models import Flight, FlightState, Schedule, Placement, Runway, BottleneckResult; from atc_mcp.domain.state import state; from atc_mcp.time_model import Seconds; print('OK')"` prints `OK` without errors.
 
 ## Dev Notes
 
@@ -353,12 +353,28 @@ No `project-context.md` was discovered under `task-4/` at the time this story wa
 
 ### Agent Model Used
 
-{{agent_model_name_version}}
+Claude Sonnet 4.5 (Windsurf / Cascade)
 
 ### Debug Log References
 
 ### Completion Notes List
 
 - Ultimate context engine analysis completed - comprehensive developer guide created.
+- Task 1: `time_model.py` populated with exact spec docstring and `Seconds = int` alias. Zero stdlib imports — import-discipline tests pass.
+- Task 2: `domain/models.py` fully implemented — `FlightState`, `OperationType`, `Priority` StrEnums; `RunwayRequirements`, `Runway`, `Flight`, `Placement`, `Schedule`, `BottleneckResult` Pydantic v2 frozen models with `extra="forbid"`. No banned imports.
+- Task 3: `domain/state.py` fully implemented — `AppState` class with all five methods (`add_flight`, `get_flight`, `replace_flights_after_schedule`, `set_latest_schedule`, `reset`) and module-level `state = AppState()` singleton.
+- Task 4: `tests/test_imports.py` extended with `test_domain_no_time_datetime_random` and `test_scheduler_no_time_datetime_random` — existing assertions untouched.
+- Task 5: `tests/test_domain_models.py` created — 9 unit tests covering FlightState pinning, Flight frozen/unknown-field validation, AppState all methods. All pass.
+- Task 6: `pytest -q` from task-4/ — 55 tests pass, 0 failures. Smoke import chain prints `OK`.
 
 ### File List
+
+- src/atc_mcp/time_model.py
+- src/atc_mcp/domain/models.py
+- src/atc_mcp/domain/state.py
+- tests/test_imports.py
+- tests/test_domain_models.py
+
+### Change Log
+
+- 2026-05-20: Story 1.3 implemented — time model alias, all domain models, AppState singleton, test_imports extension, domain model unit tests. 55/55 tests pass.
