@@ -1,6 +1,6 @@
 # Story 1.2: Configuration Loading & Startup Validation
 
-Status: ready-for-dev
+Status: review
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -32,36 +32,36 @@ So that I never run with silently-defaulted values and can diagnose config error
 
 ## Tasks / Subtasks
 
-- [ ] **Task 1 — Define `Runway`, `Config`, and `ConfigError` in `config.py`** (AC: 1, 3)
-  - [ ] Import `json`, `os`, `sys`, `pydantic` (`BaseModel`, `ConfigDict`, `Field`). Do **not** import `mcp`, anything from `domain/`, or `time`/`datetime`/`random`.
-  - [ ] Define `class ConfigError(Exception): pass` at module top level — a plain exception subclass, no extra fields.
-  - [ ] Define `class Runway(BaseModel): model_config = ConfigDict(frozen=True, extra="forbid"); id: str = Field(min_length=1); length_m: int = Field(ge=1)`. This model lives in `config.py` **for this story only** — Story 1.3 relocates it to `domain/models.py` and updates the import here; see Dev Notes.
-  - [ ] Define `class Config(BaseModel): model_config = ConfigDict(frozen=True, extra="forbid")` with all 11 fields: `runways: tuple[Runway, ...]`, `gate_count: int = Field(ge=1)`, `ground_crew_count: int = Field(ge=1)`, `runway_sep_takeoff_sec: int = Field(ge=0)`, `runway_sep_landing_sec: int = Field(ge=0)`, `runway_sep_mixed_sec: int = Field(ge=0)`, `gate_turnaround_sec: int = Field(ge=0)`, `dependency_buffer_sec: int = Field(ge=0)`, `scheduling_horizon_sec: int = Field(ge=1)`, `duration_arrival_sec: int = Field(ge=1)`, `duration_departure_sec: int = Field(ge=1)`.
+- [x] **Task 1 — Define `Runway`, `Config`, and `ConfigError` in `config.py`** (AC: 1, 3)
+  - [x] Import `json`, `os`, `sys`, `pydantic` (`BaseModel`, `ConfigDict`, `Field`). Do **not** import `mcp`, anything from `domain/`, or `time`/`datetime`/`random`.
+  - [x] Define `class ConfigError(Exception): pass` at module top level — a plain exception subclass, no extra fields.
+  - [x] Define `class Runway(BaseModel): model_config = ConfigDict(frozen=True, extra="forbid"); id: str = Field(min_length=1); length_m: int = Field(ge=1)`. This model lives in `config.py` **for this story only** — Story 1.3 relocates it to `domain/models.py` and updates the import here; see Dev Notes.
+  - [x] Define `class Config(BaseModel): model_config = ConfigDict(frozen=True, extra="forbid")` with all 11 fields: `runways: tuple[Runway, ...]`, `gate_count: int = Field(ge=1)`, `ground_crew_count: int = Field(ge=1)`, `runway_sep_takeoff_sec: int = Field(ge=0)`, `runway_sep_landing_sec: int = Field(ge=0)`, `runway_sep_mixed_sec: int = Field(ge=0)`, `gate_turnaround_sec: int = Field(ge=0)`, `dependency_buffer_sec: int = Field(ge=0)`, `scheduling_horizon_sec: int = Field(ge=1)`, `duration_arrival_sec: int = Field(ge=1)`, `duration_departure_sec: int = Field(ge=1)`.
 
-- [ ] **Task 2 — Implement `load_config()`** (AC: 1, 2, 4)
-  - [ ] Validate and parse each env var in the order shown in the env-var table (Dev Notes). For each failure, call the private helper `_fail(var_name, reason)` immediately.
-  - [ ] Implement `_fail(var_name: str, reason: str) -> None` that writes `CONFIG ERROR: {var_name} is invalid: {reason}` to `sys.stderr` and raises `ConfigError(f"{var_name}: {reason}")`.
-  - [ ] **Integer fields (all except `ATC_RUNWAYS`):** read `os.environ.get(VAR_NAME)`. If `None` or empty string → `_fail(…, "variable not set")`. Try `int(value)` in a `try/except ValueError` → `_fail(…, f'expected integer, got "{value}"')`. Check range constraint → `_fail(…, f"must be >= {min_val}, got {parsed}")`.
-  - [ ] **`ATC_RUNWAYS`:** read raw string; if missing/empty → `_fail("ATC_RUNWAYS", "variable not set")`. Parse with `json.loads`; catch `json.JSONDecodeError` → `_fail("ATC_RUNWAYS", f"not valid JSON: {e}")`. Check non-empty list → `_fail("ATC_RUNWAYS", "must contain at least one runway")`. For each item, use `Runway.model_validate(item)` inside a `try/except ValidationError` → `_fail("ATC_RUNWAYS", f"item {i}: {e}")`. After parsing all items, check duplicate `id` values → `_fail("ATC_RUNWAYS", f'duplicate runway id "{dup_id}"')`.
-  - [ ] Construct and return `Config(runways=tuple(runways), gate_count=gate_count, ...)`.
+- [x] **Task 2 — Implement `load_config()`** (AC: 1, 2, 4)
+  - [x] Validate and parse each env var in the order shown in the env-var table (Dev Notes). For each failure, call the private helper `_fail(var_name, reason)` immediately.
+  - [x] Implement `_fail(var_name: str, reason: str) -> None` that writes `CONFIG ERROR: {var_name} is invalid: {reason}` to `sys.stderr` and raises `ConfigError(f"{var_name}: {reason}")`.
+  - [x] **Integer fields (all except `ATC_RUNWAYS`):** read `os.environ.get(VAR_NAME)`. If `None` or empty string → `_fail(…, "variable not set")`. Try `int(value)` in a `try/except ValueError` → `_fail(…, f'expected integer, got "{value}"')`. Check range constraint → `_fail(…, f"must be >= {min_val}, got {parsed}")`.
+  - [x] **`ATC_RUNWAYS`:** read raw string; if missing/empty → `_fail("ATC_RUNWAYS", "variable not set")`. Parse with `json.loads`; catch `json.JSONDecodeError` → `_fail("ATC_RUNWAYS", f"not valid JSON: {e}")`. Check non-empty list → `_fail("ATC_RUNWAYS", "must contain at least one runway")`. For each item, use `Runway.model_validate(item)` inside a `try/except ValidationError` → `_fail("ATC_RUNWAYS", f"item {i}: {e}")`. After parsing all items, check duplicate `id` values → `_fail("ATC_RUNWAYS", f'duplicate runway id "{dup_id}"')`.
+  - [x] Construct and return `Config(runways=tuple(runways), gate_count=gate_count, ...)`.
 
-- [ ] **Task 3 — Write `tests/test_config.py`** (AC: 6)
-  - [ ] Use `pytest`'s `monkeypatch` fixture to set/unset env vars. Do **not** use `os.environ` directly in tests — always use `monkeypatch.setenv` / `monkeypatch.delenv`.
-  - [ ] Define a module-level `VALID_ENV` dict with all 11 valid env vars (use the reference config values from Dev Notes).
-  - [ ] `test_happy_path`: set all vars from `VALID_ENV`; call `load_config()`; assert each field value matches expectations; assert `config.runways` is a tuple of `Runway`; assert modifying a field raises.
-  - [ ] `test_missing_var` — parametrize over every var name in `VALID_ENV`; for each: delete that var, call `load_config()`, catch `ConfigError`, assert stderr contains `CONFIG ERROR: <VAR> is invalid: variable not set`.
-  - [ ] `test_invalid_integer` — parametrize over each integer var; set to `"three"` (or similar non-integer); assert `ConfigError` raised and stderr message contains `expected integer`.
-  - [ ] `test_non_positive` — for each var with `ge=1`, set to `"0"`; assert `ConfigError` with `must be >= 1`; for `ge=0` vars verify `"0"` is accepted.
-  - [ ] `test_runways_malformed_json`: set `ATC_RUNWAYS='not json'`; assert `ConfigError` with `not valid JSON`.
-  - [ ] `test_runways_empty_array`: set `ATC_RUNWAYS='[]'`; assert `ConfigError` with `must contain at least one runway`.
-  - [ ] `test_runways_extra_key`: set `ATC_RUNWAYS='[{"id":"R1","length_m":3500,"surface":"asphalt"}]'`; assert `ConfigError` (extra fields rejected by `extra="forbid"`).
-  - [ ] `test_runways_duplicate_id`: set `ATC_RUNWAYS='[{"id":"R1","length_m":3500},{"id":"R1","length_m":3000}]'`; assert `ConfigError` with `duplicate runway id "R1"`.
-  - [ ] `test_runways_non_positive_length`: set an item with `length_m=0`; assert `ConfigError`.
-  - [ ] Capture stderr in tests using `capsys` fixture: `captured = capsys.readouterr(); assert "CONFIG ERROR:" in captured.err`.
+- [x] **Task 3 — Write `tests/test_config.py`** (AC: 6)
+  - [x] Use `pytest`'s `monkeypatch` fixture to set/unset env vars. Do **not** use `os.environ` directly in tests — always use `monkeypatch.setenv` / `monkeypatch.delenv`.
+  - [x] Define a module-level `VALID_ENV` dict with all 11 valid env vars (use the reference config values from Dev Notes).
+  - [x] `test_happy_path`: set all vars from `VALID_ENV`; call `load_config()`; assert each field value matches expectations; assert `config.runways` is a tuple of `Runway`; assert modifying a field raises.
+  - [x] `test_missing_var` — parametrize over every var name in `VALID_ENV`; for each: delete that var, call `load_config()`, catch `ConfigError`, assert stderr contains `CONFIG ERROR: <VAR> is invalid: variable not set`.
+  - [x] `test_invalid_integer` — parametrize over each integer var; set to `"three"` (or similar non-integer); assert `ConfigError` raised and stderr message contains `expected integer`.
+  - [x] `test_non_positive` — for each var with `ge=1`, set to `"0"`; assert `ConfigError` with `must be >= 1`; for `ge=0` vars verify `"0"` is accepted.
+  - [x] `test_runways_malformed_json`: set `ATC_RUNWAYS='not json'`; assert `ConfigError` with `not valid JSON`.
+  - [x] `test_runways_empty_array`: set `ATC_RUNWAYS='[]'`; assert `ConfigError` with `must contain at least one runway`.
+  - [x] `test_runways_extra_key`: set `ATC_RUNWAYS='[{"id":"R1","length_m":3500,"surface":"asphalt"}]'`; assert `ConfigError` (extra fields rejected by `extra="forbid"`).
+  - [x] `test_runways_duplicate_id`: set `ATC_RUNWAYS='[{"id":"R1","length_m":3500},{"id":"R1","length_m":3000}]'`; assert `ConfigError` with `duplicate runway id "R1"`.
+  - [x] `test_runways_non_positive_length`: set an item with `length_m=0`; assert `ConfigError`.
+  - [x] Capture stderr in tests using `capsys` fixture: `captured = capsys.readouterr(); assert "CONFIG ERROR:" in captured.err`.
 
-- [ ] **Task 4 — Smoke-test the server placeholder still works** (AC: 5)
-  - [ ] Verify `pytest -q tests/test_imports.py` still passes after updating `config.py` (it now imports `os`, `json`, `sys`, `pydantic` — import-discipline assertion allows `os` only in `config.py`).
-  - [ ] Verify `pytest -q tests/test_config.py` passes.
+- [x] **Task 4 — Smoke-test the server placeholder still works** (AC: 5)
+  - [x] Verify `pytest -q tests/test_imports.py` still passes after updating `config.py` (it now imports `os`, `json`, `sys`, `pydantic` — import-discipline assertion allows `os` only in `config.py`).
+  - [x] Verify `pytest -q tests/test_config.py` passes.
 
 ## Dev Notes
 
@@ -193,12 +193,24 @@ VALID_ENV = {
 
 ### Agent Model Used
 
-{{agent_model_name_version}}
+Claude Sonnet 4.5 (Cascade)
 
 ### Debug Log References
 
 ### Completion Notes List
 
 - Ultimate context engine analysis completed - comprehensive developer guide created.
+- Implemented `ConfigError`, `Runway`, `Config` models and `load_config()` in `src/atc_mcp/config.py`.
+- Added private helpers `_fail()` and `_parse_int()` for clean, DRY validation logic.
+- `config.py` is the sole `os` importer; import-discipline tests confirm this.
+- Created `tests/test_config.py` with 41 test cases (parametrized): happy path, all 11 missing vars, 10 invalid-integer cases, 5 ge=1 non-positive rejections, 5 ge=0 zero-accepted cases, all ATC_RUNWAYS schema error branches.
+- All 42 tests pass (test_imports.py + test_server_placeholder.py + test_config.py); ruff lint clean.
 
 ### File List
+
+- `src/atc_mcp/config.py` — UPDATED (Tasks 1 & 2)
+- `tests/test_config.py` — NEW (Task 3)
+
+### Change Log
+
+- 2026-05-20: Story 1.2 implemented — `config.py` filled with `Runway`, `Config`, `ConfigError`, `load_config()`; `tests/test_config.py` created with full AC-6 coverage; 42 tests green.
