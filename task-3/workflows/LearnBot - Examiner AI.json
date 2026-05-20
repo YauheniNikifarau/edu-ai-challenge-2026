@@ -1,0 +1,108 @@
+{
+  "name": "LearnBot - Examiner AI",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "29bbe9c8-86dd-4679-8011-64fec2ddc95d",
+      "name": "Workflow Input Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const root = $input.first().json;\n\n// Try both: array-wrapped or already unwrapped\nconst item = Array.isArray(root) ? root[0] : root;\n\nconst text = item?.output?.[0]?.content?.[0]?.text;\n\nif (!text) {\n  throw new Error('Could not find text. Root keys: ' + JSON.stringify(Object.keys(item || root)));\n}\n\nlet parsed;\nif (typeof text === 'string') {\n  const raw = text\n    .trim()\n    .replace(/^```json\\s*/i, '')\n    .replace(/^```\\s*/, '')\n    .replace(/```\\s*$/, '')\n    .trim();\n  try {\n    parsed = JSON.parse(raw);\n  } catch (e) {\n    throw new Error('Invalid JSON: ' + raw.slice(0, 200));\n  }\n} else if (typeof text === 'object' && text !== null) {\n  parsed = text;\n} else {\n  throw new Error('Unexpected text type: ' + typeof text);\n}\n\nconst q = parsed.questions;\nif (!Array.isArray(q) || q.length !== 5) {\n  throw new Error('Expected exactly 5 questions, got: ' + (Array.isArray(q) ? q.length : 0));\n}\n\nfor (const item of q) {\n  if (!item.question || !item.options || !item.correctAnswer || !item.explanation) {\n    throw new Error('Question missing required fields: ' + (item.id || 'unknown'));\n  }\n  if (!['A', 'B', 'C', 'D'].includes(item.correctAnswer)) {\n    throw new Error('Invalid correctAnswer: ' + item.correctAnswer);\n  }\n}\n\nreturn [{ json: parsed }];"
+      },
+      "id": "12651f13-2345-495d-8090-ace9a816609f",
+      "name": "Parse Examiner Output",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=Generate a 5-question multiple-choice quiz for the following learning material.\n\nTITLE: {{ $json.title }}\n\nSUMMARY:\n{{ $json.summary }}\n\nCONTENT (for reference):\n{{ $json.content_excerpt }}\n\nYou are a precise quiz generator. Your task is to create a 5-question multiple-choice quiz based on the provided learning material.\n\nOutput ONLY valid JSON in the following exact structure — no markdown fences, no preamble:\n\n{\n  \"questions\": [\n    {\n      \"id\": \"Q1\",\n      \"question\": \"<clear, specific question about the content>\",\n      \"options\": {\n        \"A\": \"<option text>\",\n        \"B\": \"<option text>\",\n        \"C\": \"<option text>\",\n        \"D\": \"<option text>\"\n      },\n      \"correctAnswer\": \"<A | B | C | D>\",\n      \"explanation\": \"<1-2 sentence explanation of why the correct answer is right>\"\n    }\n  ]\n}\n\nRules:\n- Exactly 5 questions (Q1 through Q5)\n- Questions must test comprehension, not trivial recall of exact phrasing\n- Each question has exactly 4 options (A, B, C, D)\n- Options should be plausible — avoid obviously wrong distractors\n- The correct answer should be distributed across A/B/C/D (avoid always choosing B)\n- Explanations are educational, not just 'The answer is X because X'\n- Questions must be specific to this material — no generic programming questions\n- Do not include any text outside the JSON structure      "
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {
+          "textFormat": {
+            "textOptions": {
+              "type": "json_schema",
+              "name": "examiner_schema",
+              "schema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"questions\": {\n      \"type\": \"array\",\n      \"minItems\": 5,\n      \"maxItems\": 5,\n      \"items\": {\n        \"type\": \"object\",\n        \"required\": [\"id\", \"question\", \"options\", \"correctAnswer\", \"explanation\"],\n        \"properties\": {\n          \"id\": {\n            \"type\": \"string\",\n            \"pattern\": \"^Q[1-5]$\"\n          },\n          \"question\": {\n            \"type\": \"string\"\n          },\n          \"options\": {\n            \"type\": \"object\",\n            \"required\": [\"A\", \"B\", \"C\", \"D\"],\n            \"properties\": {\n              \"A\": { \"type\": \"string\" },\n              \"B\": { \"type\": \"string\" },\n              \"C\": { \"type\": \"string\" },\n              \"D\": { \"type\": \"string\" }\n            },\n            \"additionalProperties\": false\n          },\n          \"correctAnswer\": {\n            \"type\": \"string\",\n            \"enum\": [\"A\", \"B\", \"C\", \"D\"]\n          },\n          \"explanation\": {\n            \"type\": \"string\"\n          }\n        },\n        \"additionalProperties\": false\n      }\n    }\n  },\n  \"required\": [\"questions\"],\n  \"additionalProperties\": false\n}"
+            }
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        176,
+        0
+      ],
+      "id": "30065e0a-17f9-4f86-bc57-028d87a547dc",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": null,
+          "name": "",
+          "__aiGatewayManaged": true
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Workflow Input Trigger": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Parse Examiner Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "c5fc87be-897b-402e-82c1-b96055de994a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c9f2e4c132f636abe98fd1e7cda921b34f2b8cc134eeb6f04b27304938dd35f2"
+  },
+  "id": "gZlNDc0mUkqK1fQY",
+  "tags": []
+}
