@@ -2,6 +2,7 @@
 from atc_mcp.config import Config
 from atc_mcp.domain.models import Flight, FlightState, OperationType, Placement, Priority, Schedule
 from atc_mcp.scheduler.constraints import (
+    earliest_crew_feasible_start,
     earliest_gate_start,
     earliest_runway_start,
     feasible_runways,
@@ -128,6 +129,7 @@ def schedule(flights: tuple[Flight, ...], config: Config) -> Schedule:
     gates: list[str] = [f"G{i}" for i in range(1, config.gate_count + 1)]
     runway_ops: dict[str, list[Placement]] = {r.id: [] for r in config.runways}
     gate_ops: dict[str, list[Placement]] = {g: [] for g in gates}
+    committed_crew: list[tuple[int, int]] = []
 
     placements_dict: dict[str, Placement] = {}
 
@@ -179,11 +181,17 @@ def schedule(flights: tuple[Flight, ...], config: Config) -> Schedule:
 
         for runway in feasible:
             for gate in gates:
-                t = max(
-                    dep_floor,
-                    earliest_runway_start(runway_ops[runway.id], flight.operation_type, dep_floor, config),
-                    earliest_gate_start(gate_ops[gate], dep_floor, config),
-                )
+                t = dep_floor
+                while True:
+                    t_prev = t
+                    t = max(
+                        t,
+                        earliest_runway_start(runway_ops[runway.id], flight.operation_type, t, config),
+                        earliest_gate_start(gate_ops[gate], t, config),
+                    )
+                    t = earliest_crew_feasible_start(t, duration, committed_crew, config.ground_crew_count)
+                    if t == t_prev:
+                        break
                 if best_t is None or t < best_t:
                     best_t = t
                     best_runway_id = runway.id
@@ -210,6 +218,7 @@ def schedule(flights: tuple[Flight, ...], config: Config) -> Schedule:
         placements_dict[flight.flight_number] = placement
         runway_ops[best_runway_id].append(placement)
         gate_ops[best_gate_id].append(placement)
+        committed_crew.append((best_t, best_t + duration))
         result_flights[flight.flight_number] = result_flights[flight.flight_number].model_copy(update={
             "state": FlightState.scheduled,
         })

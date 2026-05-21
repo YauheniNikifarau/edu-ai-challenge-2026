@@ -53,3 +53,31 @@ def runway_unschedulable_reason(n: int, runways: tuple[Runway, ...]) -> str:
         for r in sorted(runways, key=lambda r: r.id)
     )
     return f"no runway meets minimum length {n}m (available runways: {available})"
+
+
+def earliest_crew_feasible_start(
+    candidate: int,
+    duration: int,
+    committed: list[tuple[int, int]],
+    capacity: int,
+) -> int:
+    """Return earliest t >= candidate where [t, t+duration) has peak crew < capacity.
+    
+    Args:
+        candidate: Earliest candidate start time in seconds
+        duration: Duration of the operation in seconds
+        committed: List of (start_sec, end_sec) intervals for already committed operations
+        capacity: Maximum number of concurrent operations allowed
+        
+    Returns:
+        Earliest start time where the operation can be scheduled without exceeding capacity
+    """
+    t = candidate
+    while True:
+        conflicting = [
+            (s, e) for (s, e) in committed
+            if s < t + duration and e > t
+        ]
+        if len(conflicting) < capacity:
+            return t
+        t = min(e for (_, e) in conflicting)
