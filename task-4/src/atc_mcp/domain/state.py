@@ -1,4 +1,5 @@
 """In-memory state seam — holds live domain state injected at server startup (Story 1.3)."""
+from atc_mcp.config import Config
 from atc_mcp.domain.models import Flight, Schedule
 
 
@@ -6,6 +7,7 @@ class AppState:
     def __init__(self) -> None:
         self.flights: dict[str, Flight] = {}
         self.latest_schedule: Schedule | None = None
+        self.config: Config | None = None
 
     def add_flight(self, flight: Flight) -> None:
         """Append flight to the queue. Caller is responsible for duplicate checks."""
@@ -27,6 +29,10 @@ class AppState:
     def set_latest_schedule(self, schedule: Schedule) -> None:
         """Store the result of the latest generate_schedule call."""
         self.latest_schedule = schedule
+
+    def set_config(self, config: Config) -> None:
+        """Store the config at server startup."""
+        self.config = config
 
     def reset(self) -> None:
         """Clear all state (used by tests and future restart scenarios)."""

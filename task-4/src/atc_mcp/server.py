@@ -15,6 +15,8 @@ from atc_mcp.tools import (
 
 
 def create_app(config) -> FastMCP:
+    from atc_mcp.domain.state import state
+    
     mcp = FastMCP("atc-mcp")
 
     mcp.add_tool(submit_flight)
@@ -27,6 +29,7 @@ def create_app(config) -> FastMCP:
     mcp.resource("atc://runways")(runways_resource)
     mcp.resource("atc://timeline")(timeline_resource)
 
+    state.set_config(config)
     return mcp
 
 

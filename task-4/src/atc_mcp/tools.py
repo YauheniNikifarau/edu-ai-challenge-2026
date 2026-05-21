@@ -7,6 +7,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from atc_mcp.domain.models import Flight, FlightState, OperationType, Priority, RunwayRequirements
 from atc_mcp.domain.state import state
+from atc_mcp.scheduler.algorithm import schedule
 
 
 class RunwayRequirementsInput(BaseModel):
@@ -69,7 +70,65 @@ def cancel_flight(data: CancelFlightInput) -> dict:
 
 def generate_schedule() -> dict:
     """Generate a fresh deterministic schedule."""
-    raise NotImplementedError("not yet implemented")
+    assert state.config is not None, "Config must be set before calling generate_schedule"
+    
+    result = schedule(tuple(state.flights.values()), state.config)
+    state.set_latest_schedule(result)
+    
+    scheduled_numbers = {p.flight_number for p in result.placements}
+    unscheduled_map = {f.flight_number: f for f in result.unscheduled}
+    
+    updated: dict[str, Flight] = {}
+    for fn, flight in state.flights.items():
+        if flight.state == FlightState.cancelled:
+            updated[fn] = flight
+        elif fn in scheduled_numbers:
+            updated[fn] = flight.model_copy(update={
+                "state": FlightState.scheduled,
+                "unscheduled_reason": None,
+            })
+        elif fn in unscheduled_map:
+            unscheduled_flight = unscheduled_map[fn]
+            updated[fn] = flight.model_copy(update={
+                "state": FlightState.unschedulable,
+                "unscheduled_reason": unscheduled_flight.unscheduled_reason,
+            })
+        else:
+            updated[fn] = flight
+    
+    state.replace_flights_after_schedule(updated)
+    
+    scheduled_placements = [
+        {
+            "flight_number": p.flight_number,
+            "operation_type": p.operation_type,
+            "runway_id": p.runway_id,
+            "gate_id": p.gate_id,
+            "start_sec": p.start_sec,
+            "end_sec": p.end_sec,
+        }
+        for p in result.placements
+    ]
+    
+    unscheduled_list = [
+        {"flight_number": f.flight_number, "reason": f.unscheduled_reason or ""}
+        for f in result.unscheduled
+    ]
+    
+    cancelled_count = sum(
+        1 for f in state.flights.values() if f.state == FlightState.cancelled
+    )
+    
+    return {
+        "schedule": scheduled_placements,
+        "unscheduled": unscheduled_list,
+        "completion_time_seconds": result.completion_time_seconds,
+        "summary": {
+            "scheduled_count": len(result.placements),
+            "unscheduled_count": len(result.unscheduled),
+            "cancelled_count": cancelled_count,
+        },
+    }
 
 
 def get_airport_status() -> dict:
