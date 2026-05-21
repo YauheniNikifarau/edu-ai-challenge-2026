@@ -1,1 +1,1 @@
-# Real entrypoint lands in Story 1.4
+from atc_mcp.server import main; main()

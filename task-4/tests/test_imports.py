@@ -66,17 +66,17 @@ def test_only_config_imports_os():
 
 
 # ---------------------------------------------------------------------------
-# AC-3d: only tools.py and resources.py may import mcp under src/atc_mcp/
+# AC-3d: only tools.py, resources.py, and server.py may import mcp under src/atc_mcp/
 # ---------------------------------------------------------------------------
 
 def test_only_tools_and_resources_import_mcp():
-    allowed = {SRC_ROOT / "tools.py", SRC_ROOT / "resources.py"}
+    allowed = {SRC_ROOT / "tools.py", SRC_ROOT / "resources.py", SRC_ROOT / "server.py"}
     for path in SRC_ROOT.rglob("*.py"):
         if path in allowed:
             continue
         assert "mcp" not in imports_of(path), (
             f"{path.relative_to(SRC_ROOT.parent.parent)} must not import 'mcp' "
-            f"(only tools.py and resources.py are allowed to)"
+            f"(only tools.py, resources.py, and server.py are allowed to)"
         )
 
 

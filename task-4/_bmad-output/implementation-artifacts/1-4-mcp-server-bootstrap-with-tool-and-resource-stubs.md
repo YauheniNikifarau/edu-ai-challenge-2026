@@ -1,6 +1,6 @@
 # Story 1.4: MCP Server Bootstrap with Tool & Resource Stubs
 
-Status: ready-for-dev
+Status: review
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -24,67 +24,67 @@ So that I can verify the server is wired correctly before any business logic is 
 
 ## Tasks / Subtasks
 
-- [ ] **Task 1 — Add Pydantic input schemas and stub handlers to `tools.py`** (AC: 2, 4)
-  - [ ] Define `RunwayRequirementsInput(BaseModel)` with `model_config = ConfigDict(extra="forbid")` and field `min_length_m: int = Field(ge=1)`.
-  - [ ] Define `SubmitFlightInput(BaseModel)` with `model_config = ConfigDict(extra="forbid")` and fields: `flight_number: str`, `operation_type: Literal["arrival", "departure"]`, `priority: Literal["high", "medium", "low"]`, `dependencies: list[str] = []`, `runway_requirements: RunwayRequirementsInput | None = None`.
-  - [ ] Define `CancelFlightInput(BaseModel)` with `model_config = ConfigDict(extra="forbid")` and field `flight_number: str`.
-  - [ ] For no-parameter tools (`generate_schedule`, `get_airport_status`, `analyze_bottleneck`), use zero-argument handler functions (FastMCP generates `{"type":"object","properties":{}}` automatically — no need for an explicit empty model).
-  - [ ] Implement stub handler functions with matching names (used verbatim as MCP tool names): `submit_flight(data: SubmitFlightInput)`, `cancel_flight(data: CancelFlightInput)`, `generate_schedule()`, `get_airport_status()`, `analyze_bottleneck()`. Each raises `NotImplementedError("not yet implemented")`.
-  - [ ] Add a one-line docstring to each function — FastMCP uses the docstring as the tool description.
-  - [ ] `tools.py` must NOT import `mcp` in this story. It needs only `pydantic` and stdlib. (`mcp.types.McpError` is added in story 2.x when real logic lands.)
+- [x] **Task 1 — Add Pydantic input schemas and stub handlers to `tools.py`** (AC: 2, 4)
+  - [x] Define `RunwayRequirementsInput(BaseModel)` with `model_config = ConfigDict(extra="forbid")` and field `min_length_m: int = Field(ge=1)`.
+  - [x] Define `SubmitFlightInput(BaseModel)` with `model_config = ConfigDict(extra="forbid")` and fields: `flight_number: str`, `operation_type: Literal["arrival", "departure"]`, `priority: Literal["high", "medium", "low"]`, `dependencies: list[str] = []`, `runway_requirements: RunwayRequirementsInput | None = None`.
+  - [x] Define `CancelFlightInput(BaseModel)` with `model_config = ConfigDict(extra="forbid")` and field `flight_number: str`.
+  - [x] For no-parameter tools (`generate_schedule`, `get_airport_status`, `analyze_bottleneck`), use zero-argument handler functions (FastMCP generates `{"type":"object","properties":{}}` automatically — no need for an explicit empty model).
+  - [x] Implement stub handler functions with matching names (used verbatim as MCP tool names): `submit_flight(data: SubmitFlightInput)`, `cancel_flight(data: CancelFlightInput)`, `generate_schedule()`, `get_airport_status()`, `analyze_bottleneck()`. Each raises `NotImplementedError("not yet implemented")`.
+  - [x] Add a one-line docstring to each function — FastMCP uses the docstring as the tool description.
+  - [x] `tools.py` must NOT import `mcp` in this story. It needs only `pydantic` and stdlib. (`mcp.types.McpError` is added in story 2.x when real logic lands.)
 
-- [ ] **Task 2 — Add stub resource handlers to `resources.py`** (AC: 3, 5)
-  - [ ] Implement `flights_resource() -> str` — returns `'{"flights": []}'`.
-  - [ ] Implement `runways_resource() -> str` — returns `'{"runways": []}'`.
-  - [ ] Implement `timeline_resource() -> str` — returns `'{"events": []}'`.
-  - [ ] Add a one-line docstring to each (FastMCP uses it as the resource description).
-  - [ ] `resources.py` must NOT import `mcp` in this story. It needs only `json` (or inline string literals).
+- [x] **Task 2 — Add stub resource handlers to `resources.py`** (AC: 3, 5)
+  - [x] Implement `flights_resource() -> str` — returns `'{"flights": []}'`.
+  - [x] Implement `runways_resource() -> str` — returns `'{"runways": []}'`.
+  - [x] Implement `timeline_resource() -> str` — returns `'{"events": []}'`.
+  - [x] Add a one-line docstring to each (FastMCP uses it as the resource description).
+  - [x] `resources.py` must NOT import `mcp` in this story. It needs only `json` (or inline string literals).
 
-- [ ] **Task 3 — Implement `server.py` with FastMCP bootstrap** (AC: 1, 2, 3, 4, 5)
-  - [ ] Import `FastMCP` from `mcp.server.fastmcp`.
-  - [ ] Import `load_config` and `ConfigError` from `atc_mcp.config`.
-  - [ ] Import all tool handler functions from `atc_mcp.tools`.
-  - [ ] Import all resource handler functions from `atc_mcp.resources`.
-  - [ ] Define `create_app(config) -> FastMCP`: instantiate `FastMCP("atc-mcp")`, register tools and resources, return the instance. Do NOT call `run()` inside `create_app()`.
-  - [ ] Register tools using `@mcp.tool()` decorator OR `mcp.add_tool(fn)`. The function names (`submit_flight`, `cancel_flight`, `generate_schedule`, `get_airport_status`, `analyze_bottleneck`) become the MCP tool names verbatim — verify they match architecture exactly.
-  - [ ] Register resources with exact URIs: `mcp.resource("atc://flights")(flights_resource)`, etc.
-  - [ ] Define `main()`: call `load_config()`, catch `ConfigError` → `sys.exit(1)`, call `create_app(config)`, call `app.run(transport="stdio")`.
-  - [ ] Add `if __name__ == "__main__": main()` guard.
-  - [ ] Never write to stdout outside `app.run()`. Any startup log goes to stderr only.
+- [x] **Task 3 — Implement `server.py` with FastMCP bootstrap** (AC: 1, 2, 3, 4, 5)
+  - [x] Import `FastMCP` from `mcp.server.fastmcp`.
+  - [x] Import `load_config` and `ConfigError` from `atc_mcp.config`.
+  - [x] Import all tool handler functions from `atc_mcp.tools`.
+  - [x] Import all resource handler functions from `atc_mcp.resources`.
+  - [x] Define `create_app(config) -> FastMCP`: instantiate `FastMCP("atc-mcp")`, register tools and resources, return the instance. Do NOT call `run()` inside `create_app()`.
+  - [x] Register tools using `@mcp.tool()` decorator OR `mcp.add_tool(fn)`. The function names (`submit_flight`, `cancel_flight`, `generate_schedule`, `get_airport_status`, `analyze_bottleneck`) become the MCP tool names verbatim — verify they match architecture exactly.
+  - [x] Register resources with exact URIs: `mcp.resource("atc://flights")(flights_resource)`, etc.
+  - [x] Define `main()`: call `load_config()`, catch `ConfigError` → `sys.exit(1)`, call `create_app(config)`, call `app.run(transport="stdio")`.
+  - [x] Add `if __name__ == "__main__": main()` guard.
+  - [x] Never write to stdout outside `app.run()`. Any startup log goes to stderr only.
 
-- [ ] **Task 4 — Wire `__main__.py`** (AC: 9)
-  - [ ] Replace the inert placeholder with exactly: `from atc_mcp.server import main; main()`.
-  - [ ] Do NOT import `mcp` in `__main__.py`.
+- [x] **Task 4 — Wire `__main__.py`** (AC: 9)
+  - [x] Replace the inert placeholder with exactly: `from atc_mcp.server import main; main()`.
+  - [x] Do NOT import `mcp` in `__main__.py`.
 
-- [ ] **Task 5 — Update `tests/test_imports.py`** (AC: 8)
-  - [ ] Find the assertion that checks only `{tools.py, resources.py}` may import `mcp`. Extend the allowed set to `{tools.py, resources.py, server.py}`.
-  - [ ] All other assertions from stories 1.1 and 1.3 remain untouched: `domain/` and `scheduler/` must not import `mcp`, `os`, `time`, `datetime`, or `random`; `config.py` is the sole `os` importer.
-  - [ ] Run `pytest -q tests/test_imports.py` and confirm it exits 0.
+- [x] **Task 5 — Update `tests/test_imports.py`** (AC: 8)
+  - [x] Find the assertion that checks only `{tools.py, resources.py}` may import `mcp`. Extend the allowed set to `{tools.py, resources.py, server.py}`.
+  - [x] All other assertions from stories 1.1 and 1.3 remain untouched: `domain/` and `scheduler/` must not import `mcp`, `os`, `time`, `datetime`, or `random`; `config.py` is the sole `os` importer.
+  - [x] Run `pytest -q tests/test_imports.py` and confirm it exits 0.
 
-- [ ] **Task 6 — Create `tests/conftest.py` with shared env fixture** (AC: 6, 7)
-  - [ ] Create `tests/conftest.py` (it does not exist yet — story 1.1 explicitly deferred it).
-  - [ ] Define a `valid_env` pytest fixture that `monkeypatches` or returns a dict of all 11 `ATC_*` vars set to the reference config values (see Dev Notes §Reference Config).
-  - [ ] Keep `conftest.py` minimal — one fixture only; no imports beyond `pytest` and `os`.
+- [x] **Task 6 — Create `tests/conftest.py` with shared env fixture** (AC: 6, 7)
+  - [x] Create `tests/conftest.py` (it does not exist yet — story 1.1 explicitly deferred it).
+  - [x] Define a `valid_env` pytest fixture that `monkeypatches` or returns a dict of all 11 `ATC_*` vars set to the reference config values (see Dev Notes §Reference Config).
+  - [x] Keep `conftest.py` minimal — one fixture only; no imports beyond `pytest` and `os`.
 
-- [ ] **Task 7 — Write `tests/test_server_bootstrap.py`** (AC: 6)
-  - [ ] Import `os`, `pytest`, `load_config` from `atc_mcp.config`, `create_app` from `atc_mcp.server`.
-  - [ ] Use the `valid_env` fixture to set env vars before calling `load_config()`.
-  - [ ] Call `create_app(config)` to get the `FastMCP` instance.
-  - [ ] Assert tool count == 5 and resource count == 3 using FastMCP introspection (see Dev Notes §Testing Without pytest-asyncio for the exact attribute path).
-  - [ ] Assert exact name sets: `{"submit_flight", "generate_schedule", "get_airport_status", "cancel_flight", "analyze_bottleneck"}` and `{"atc://flights", "atc://runways", "atc://timeline"}`.
-  - [ ] Test is synchronous (no `asyncio.run()` needed for FastMCP introspection).
+- [x] **Task 7 — Write `tests/test_server_bootstrap.py`** (AC: 6)
+  - [x] Import `os`, `pytest`, `load_config` from `atc_mcp.config`, `create_app` from `atc_mcp.server`.
+  - [x] Use the `valid_env` fixture to set env vars before calling `load_config()`.
+  - [x] Call `create_app(config)` to get the `FastMCP` instance.
+  - [x] Assert tool count == 5 and resource count == 3 using FastMCP introspection (see Dev Notes §Testing Without pytest-asyncio for the exact attribute path).
+  - [x] Assert exact name sets: `{"submit_flight", "generate_schedule", "get_airport_status", "cancel_flight", "analyze_bottleneck"}` and `{"atc://flights", "atc://runways", "atc://timeline"}`.
+  - [x] Test is synchronous (no `asyncio.run()` needed for FastMCP introspection).
 
-- [ ] **Task 8 — Write `tests/test_config_failure_exit.py`** (AC: 7)
-  - [ ] Use `subprocess.run([sys.executable, "-m", "atc_mcp.server"], capture_output=True, env={...}, timeout=5)`.
-  - [ ] Pass an explicit `env` dict that is missing one `ATC_*` var (do NOT inherit parent env — parent may have valid vars set).
-  - [ ] Assert `result.returncode == 1`.
-  - [ ] Assert `b"CONFIG ERROR:"` in `result.stderr`.
-  - [ ] Parametrize over at least three different missing vars (e.g., `ATC_RUNWAYS`, `ATC_GATE_COUNT`, `ATC_DURATION_ARRIVAL_SEC`).
-  - [ ] Always pass `timeout=5` — a running server never returns without it.
+- [x] **Task 8 — Write `tests/test_config_failure_exit.py`** (AC: 7)
+  - [x] Use `subprocess.run([sys.executable, "-m", "atc_mcp.server"], capture_output=True, env={...}, timeout=5)`.
+  - [x] Pass an explicit `env` dict that is missing one `ATC_*` var (do NOT inherit parent env — parent may have valid vars set).
+  - [x] Assert `result.returncode == 1`.
+  - [x] Assert `b"CONFIG ERROR:"` in `result.stderr`.
+  - [x] Parametrize over at least three different missing vars (e.g., `ATC_RUNWAYS`, `ATC_GATE_COUNT`, `ATC_DURATION_ARRIVAL_SEC`).
+  - [x] Always pass `timeout=5` — a running server never returns without it.
 
-- [ ] **Task 9 — Smoke verify** (AC: 1)
-  - [ ] Set all `ATC_*` env vars and run `python -m atc_mcp`. Confirm no stray stdout before the JSON-RPC handshake. Stop with Ctrl-C or connect via MCP Inspector.
-  - [ ] Run `pytest -q` from `task-4/` and confirm all tests pass.
+- [x] **Task 9 — Smoke verify** (AC: 1)
+  - [x] Set all `ATC_*` env vars and run `python -m atc_mcp`. Confirm no stray stdout before the JSON-RPC handshake. Stop with Ctrl-C or connect via MCP Inspector.
+  - [x] Run `pytest -q` from `task-4/` and confirm all tests pass.
 
 ## Dev Notes
 
@@ -523,5 +523,22 @@ The file tree matches architecture.md §Complete Project Directory Structure for
 ### Completion Notes List
 
 - Ultimate context engine analysis completed - comprehensive developer guide created.
+- Implemented all 9 tasks for Story 1.4 (mcp 1.27.1 installed; used `mcp.add_tool(fn)` for tools and `mcp.resource(uri)(fn)` decorator-call style for resources since `add_resource_fn` is absent in this SDK version).
+- `test_server_placeholder.py` updated: old placeholder message assertion replaced with new CONFIG ERROR assertion.
+- 62 tests pass, 0 failures.
+
+### Change Log
+
+- Story 1.4 implementation complete (2026-05-20): FastMCP server bootstrapped with 5 tool stubs and 3 resource stubs; all AC-1 through AC-9 satisfied.
 
 ### File List
+
+- src/atc_mcp/tools.py
+- src/atc_mcp/resources.py
+- src/atc_mcp/server.py
+- src/atc_mcp/__main__.py
+- tests/test_imports.py
+- tests/conftest.py
+- tests/test_server_bootstrap.py
+- tests/test_config_failure_exit.py
+- tests/test_server_placeholder.py
