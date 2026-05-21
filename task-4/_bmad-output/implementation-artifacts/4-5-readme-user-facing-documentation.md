@@ -3,7 +3,7 @@ story_id: "4.5"
 story_key: "4-5-readme-user-facing-documentation"
 epic: "Epic 4: Bottleneck Analysis, Validation & Project Delivery"
 title: "`README.md` — User-Facing Documentation"
-status: "ready-for-dev"
+status: "review"
 created: "2026-05-21"
 dependencies: ["1.2", "1.4", "2.1", "2.2", "2.3", "3.1", "3.2", "3.3", "3.4", "3.5", "3.6", "3.7", "4.1", "4.2", "4.3", "4.4"]
 ---
@@ -45,19 +45,19 @@ This is a pure content-creation story. **No source code changes are required.** 
 
 ## Tasks / Subtasks
 
-- [ ] Create `task-4/README.md` (AC: all)
-  - [ ] Write §1 — What this is (1 paragraph, no marketing fluff)
-  - [ ] Write §2 — Install / build (pip command, Python version requirement, venv recommendation)
-  - [ ] Write §3 — Full env var reference (all 11 `ATC_*` vars, sourced from `config.py`)
-  - [ ] Write §4 — Run instructions (`python -m atc_mcp`, stderr on config failure)
-  - [ ] Write §5 — MCP client connection (Claude Desktop JSON snippet with all env vars pre-filled)
-  - [ ] Write §6 — Tool catalog (all 5 tools; input + output shapes from architecture)
-  - [ ] Write §7 — Resource catalog (all 3 resources; URI + payload shape from architecture)
-  - [ ] Write §8 — Testing (`pytest -q` from `task-4/`)
-  - [ ] Write §9 — Non-features list (verbatim from `spec.md §11`)
-- [ ] Cross-check §3 against `src/atc_mcp/config.py` — no env var omitted or added (AC: drift)
-- [ ] Cross-check §6 against `src/atc_mcp/server.py` `mcp.add_tool(...)` calls (AC: drift)
-- [ ] Cross-check §7 against `src/atc_mcp/server.py` `mcp.resource(...)` calls (AC: drift)
+- [x] Create `task-4/README.md` (AC: all)
+  - [x] Write §1 — What this is (1 paragraph, no marketing fluff)
+  - [x] Write §2 — Install / build (pip command, Python version requirement, venv recommendation)
+  - [x] Write §3 — Full env var reference (all 11 `ATC_*` vars, sourced from `config.py`)
+  - [x] Write §4 — Run instructions (`python -m atc_mcp`, stderr on config failure)
+  - [x] Write §5 — MCP client connection (Claude Desktop JSON snippet with all env vars pre-filled)
+  - [x] Write §6 — Tool catalog (all 5 tools; input + output shapes from architecture)
+  - [x] Write §7 — Resource catalog (all 3 resources; URI + payload shape from architecture)
+  - [x] Write §8 — Testing (`pytest -q` from `task-4/`)
+  - [x] Write §9 — Non-features list (verbatim from `spec.md §11`)
+- [x] Cross-check §3 against `src/atc_mcp/config.py` — no env var omitted or added (AC: drift)
+- [x] Cross-check §6 against `src/atc_mcp/server.py` `mcp.add_tool(...)` calls (AC: drift)
+- [x] Cross-check §7 against `src/atc_mcp/server.py` `mcp.resource(...)` calls (AC: drift)
 
 ## Dev Notes
 
@@ -311,10 +311,28 @@ These are from architecture.md §Format Patterns — README code examples must f
 
 ### Agent Model Used
 
+Claude 3.7 Sonnet (via Windsurf Cascade)
+
 ### Debug Log References
 
+N/A - Documentation-only story, no code changes
+
 ### Completion Notes List
+
+- ✅ Created comprehensive `README.md` with all 9 required sections
+- ✅ Verified all 11 environment variables match `src/atc_mcp/config.py` exactly
+- ✅ Verified all 5 tools match `src/atc_mcp/server.py` registrations
+- ✅ Verified all 3 resources match `src/atc_mcp/server.py` registrations
+- ✅ Included validation error examples from config.py implementation
+- ✅ Provided Claude Desktop configuration snippet with all env vars
+- ✅ Documented MCP CLI dev mode usage
+- ✅ Listed all non-features from spec.md §11
+- ✅ No code drift detected - README accurately reflects implementation
 
 ### File List
 
 - `README.md` — created
+
+## Change Log
+
+- **2026-05-21**: Created comprehensive `README.md` with all 9 required sections (§1-§9). Verified accuracy against source files: all 11 env vars match `config.py`, all 5 tools match `server.py` registrations, all 3 resources match `server.py` registrations. No code drift detected.
