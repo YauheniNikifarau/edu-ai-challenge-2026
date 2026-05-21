@@ -164,4 +164,8 @@ def get_airport_status() -> dict:
 
 def analyze_bottleneck() -> dict:
     """Identify the longest active scheduled dependency chain."""
-    raise NotImplementedError("not yet implemented")
+    from atc_mcp.bottleneck import longest_active_chain
+    
+    assert state.config is not None, "Config must be set before calling analyze_bottleneck"
+    result = longest_active_chain(state, state.config)
+    return result.model_dump(mode="json")
