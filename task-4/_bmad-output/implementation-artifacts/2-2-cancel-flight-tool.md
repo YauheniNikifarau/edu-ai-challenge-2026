@@ -1,6 +1,6 @@
 # Story 2.2: `cancel_flight` Tool (State Mutation Only)
 
-Status: ready-for-dev
+Status: review
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -38,29 +38,29 @@ So that I can remove it from operations; the full dependent re-evaluation cascad
 
 ## Tasks / Subtasks
 
-- [ ] **Task 1 — Implement `cancel_flight` handler in `tools.py`** (AC: 1, 2, 3, 4, 5)
-  - [ ] Import `McpError` from `mcp.types` at the top of `tools.py`.
-  - [ ] Import `state` from `atc_mcp.domain.state`.
-  - [ ] Import `Flight`, `FlightState` from `atc_mcp.domain.models`.
-  - [ ] Replace the `raise NotImplementedError("not yet implemented")` in `cancel_flight(data: CancelFlightInput) -> dict` with the implementation.
-  - [ ] **Step 1 — Validate flight exists:** Call `state.get_flight(data.flight_number)`. If `None`, raise `McpError(INVALID_PARAMS, f"flight {data.flight_number} does not exist")`.
-  - [ ] **Step 2 — Check if already cancelled:** If `flight.state == FlightState.cancelled`, raise `McpError(INVALID_PARAMS, f"flight {data.flight_number} is already cancelled")`.
-  - [ ] **Step 3 — Mutate flight state:** Use `flight.model_copy(update={...})` to create a new `Flight` instance with `state=FlightState.cancelled` and `unscheduled_reason=None`. (Note: `Flight` is frozen, so you cannot mutate in place — use `model_copy()`.)
-  - [ ] **Step 4 — Update state:** Call `state.flights[data.flight_number] = cancelled_flight` to replace the flight in the dict.
-  - [ ] **Step 5 — Return payload:** Return `{"cancelled": data.flight_number, "dependents_reevaluated": []}`.
+- [x] **Task 1 — Implement `cancel_flight` handler in `tools.py`** (AC: 1, 2, 3, 4, 5)
+  - [x] Import `McpError` from `mcp.types` at the top of `tools.py`.
+  - [x] Import `state` from `atc_mcp.domain.state`.
+  - [x] Import `Flight`, `FlightState` from `atc_mcp.domain.models`.
+  - [x] Replace the `raise NotImplementedError("not yet implemented")` in `cancel_flight(data: CancelFlightInput) -> dict` with the implementation.
+  - [x] **Step 1 — Validate flight exists:** Call `state.get_flight(data.flight_number)`. If `None`, raise `McpError(INVALID_PARAMS, f"flight {data.flight_number} does not exist")`.
+  - [x] **Step 2 — Check if already cancelled:** If `flight.state == FlightState.cancelled`, raise `McpError(INVALID_PARAMS, f"flight {data.flight_number} is already cancelled")`.
+  - [x] **Step 3 — Mutate flight state:** Use `flight.model_copy(update={...})` to create a new `Flight` instance with `state=FlightState.cancelled` and `unscheduled_reason=None`. (Note: `Flight` is frozen, so you cannot mutate in place — use `model_copy()`.)
+  - [x] **Step 4 — Update state:** Call `state.flights[data.flight_number] = cancelled_flight` to replace the flight in the dict.
+  - [x] **Step 5 — Return payload:** Return `{"cancelled": data.flight_number, "dependents_reevaluated": []}`.
 
-- [ ] **Task 2 — Create `tests/test_cancel_flight.py`** (AC: 6)
-  - [ ] Import `pytest`, `state` from `atc_mcp.domain.state`, `Flight`, `FlightState` from `atc_mcp.domain.models`, `cancel_flight`, `CancelFlightInput` from `atc_mcp.tools`, `McpError` from `mcp.types`.
-  - [ ] Add a `setup_function(function)` that calls `state.reset()` before each test to ensure clean state.
-  - [ ] **Test 1 — `test_cancel_queued_flight`:** Create a queued flight, add to state, call `cancel_flight`, assert state is `cancelled`, `unscheduled_reason` is `None`, and response payload matches `{"cancelled": "...", "dependents_reevaluated": []}`.
-  - [ ] **Test 2 — `test_cancel_scheduled_flight`:** Create a flight with `state=FlightState.scheduled`, add to state, call `cancel_flight`, assert state is `cancelled` and payload is correct.
-  - [ ] **Test 3 — `test_cancel_already_cancelled_raises_error`:** Create a cancelled flight, add to state, call `cancel_flight` and assert it raises `McpError` with message exactly `"flight F is already cancelled"` (use `pytest.raises(McpError) as exc_info` and assert `str(exc_info.value.error.message) == "flight F is already cancelled"`).
-  - [ ] **Test 4 — `test_cancel_unknown_flight_raises_error`:** Call `cancel_flight` with a flight number that does not exist, assert it raises `McpError` with message `"flight XYZ does not exist"`.
-  - [ ] **Test 5 — `test_cancel_payload_shape`:** Verify the response dict has exactly two keys: `"cancelled"` and `"dependents_reevaluated"`, and `dependents_reevaluated` is an empty list.
+- [x] **Task 2 — Create `tests/test_cancel_flight.py`** (AC: 6)
+  - [x] Import `pytest`, `state` from `atc_mcp.domain.state`, `Flight`, `FlightState` from `atc_mcp.domain.models`, `cancel_flight`, `CancelFlightInput` from `atc_mcp.tools`, `McpError` from `mcp.types`.
+  - [x] Add a `setup_function(function)` that calls `state.reset()` before each test to ensure clean state.
+  - [x] **Test 1 — `test_cancel_queued_flight`:** Create a queued flight, add to state, call `cancel_flight`, assert state is `cancelled`, `unscheduled_reason` is `None`, and response payload matches `{"cancelled": "...", "dependents_reevaluated": []}`.
+  - [x] **Test 2 — `test_cancel_scheduled_flight`:** Create a flight with `state=FlightState.scheduled`, add to state, call `cancel_flight`, assert state is `cancelled` and payload is correct.
+  - [x] **Test 3 — `test_cancel_already_cancelled_raises_error`:** Create a cancelled flight, add to state, call `cancel_flight` and assert it raises `McpError` with message exactly `"flight F is already cancelled"` (use `pytest.raises(McpError) as exc_info` and assert `str(exc_info.value.error.message) == "flight F is already cancelled"`).
+  - [x] **Test 4 — `test_cancel_unknown_flight_raises_error`:** Call `cancel_flight` with a flight number that does not exist, assert it raises `McpError` with message `"flight XYZ does not exist"`.
+  - [x] **Test 5 — `test_cancel_payload_shape`:** Verify the response dict has exactly two keys: `"cancelled"` and `"dependents_reevaluated"`, and `dependents_reevaluated` is an empty list.
 
-- [ ] **Task 3 — Smoke verify**
-  - [ ] Run `pytest -q tests/test_cancel_flight.py` and confirm all tests pass.
-  - [ ] Run `pytest -q` from `task-4/` and confirm no regressions in existing tests.
+- [x] **Task 3 — Smoke verify**
+  - [x] Run `pytest -q tests/test_cancel_flight.py` and confirm all tests pass.
+  - [x] Run `pytest -q` from `task-4/` and confirm no regressions in existing tests.
 
 ## Dev Notes
 
@@ -251,16 +251,40 @@ This story is part of Epic 2 (Flight Queue Management) in the Air Traffic Contro
 
 **Next story:** 2.3 will implement the `atc://flights` resource to expose the flight queue including cancelled flights.
 
+## Dev Agent Record
+
+### Implementation Plan
+
+Implemented `cancel_flight` in `tools.py` using `mcp.shared.exceptions.McpError` (actual SDK location) and `mcp.types.ErrorData`/`INVALID_PARAMS`. Used `model_copy(update={...})` on the frozen `Flight` Pydantic model to produce a cancelled copy, then replaced the entry in `state.flights`. Tests use `setup_function` for state isolation without `valid_env` dependency (cancel_flight has no config dependency).
+
+### Completion Notes
+
+- Replaced `cancel_flight` stub in `tools.py` with full implementation (AC 1–5).
+- Added `from mcp.shared.exceptions import McpError` and `from mcp.types import INVALID_PARAMS, ErrorData` imports.
+- Created `tests/test_cancel_flight.py` with 5 tests covering all AC-6 scenarios.
+- All 5 new tests pass; full suite 76/76 pass with no regressions.
+- `dependents_reevaluated: []` field always present per AC-3 and architecture contract.
+- Error messages string-exact per AC-4 (`"flight F is already cancelled"`) and AC-5 (`"flight XYZ does not exist"`).
+
+## File List
+
+- `src/atc_mcp/tools.py` — modified (imports added, `cancel_flight` stub replaced)
+- `tests/test_cancel_flight.py` — created (5 test cases)
+
+## Change Log
+
+- Implemented `cancel_flight` tool handler with state mutation, error handling, and canonical response payload (Date: 2026-05-21)
+
 ## Story Completion Checklist
 
-- [ ] `cancel_flight` implementation in `tools.py` replaces the stub
-- [ ] All imports added to `tools.py` (McpError, state, Flight, FlightState)
-- [ ] `tests/test_cancel_flight.py` created with 5 test cases
-- [ ] All tests pass: `pytest -q tests/test_cancel_flight.py`
-- [ ] No regressions: `pytest -q` (all tests pass)
-- [ ] Error messages are string-exact per AC-4 and AC-5
-- [ ] Response payload includes `dependents_reevaluated: []` field per AC-3
-- [ ] Code follows import discipline and architecture patterns
+- [x] `cancel_flight` implementation in `tools.py` replaces the stub
+- [x] All imports added to `tools.py` (McpError, state, Flight, FlightState)
+- [x] `tests/test_cancel_flight.py` created with 5 test cases
+- [x] All tests pass: `pytest -q tests/test_cancel_flight.py`
+- [x] No regressions: `pytest -q` (all tests pass)
+- [x] Error messages are string-exact per AC-4 and AC-5
+- [x] Response payload includes `dependents_reevaluated: []` field per AC-3
+- [x] Code follows import discipline and architecture patterns
 
 ---
 

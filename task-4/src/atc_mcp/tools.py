@@ -1,6 +1,8 @@
 """MCP tool handlers — the only layer that imports the mcp SDK (Story 1.4+)."""
 from typing import Literal
 
+from mcp.shared.exceptions import McpError
+from mcp.types import INVALID_PARAMS, ErrorData
 from pydantic import BaseModel, ConfigDict, Field
 
 from atc_mcp.domain.models import Flight, FlightState, OperationType, Priority, RunwayRequirements
@@ -55,7 +57,14 @@ def submit_flight(data: SubmitFlightInput) -> dict:
 
 def cancel_flight(data: CancelFlightInput) -> dict:
     """Cancel a flight and re-evaluate dependents."""
-    raise NotImplementedError("not yet implemented")
+    flight = state.get_flight(data.flight_number)
+    if flight is None:
+        raise McpError(ErrorData(code=INVALID_PARAMS, message=f"flight {data.flight_number} does not exist"))
+    if flight.state == FlightState.cancelled:
+        raise McpError(ErrorData(code=INVALID_PARAMS, message=f"flight {data.flight_number} is already cancelled"))
+    cancelled_flight = flight.model_copy(update={"state": FlightState.cancelled, "unscheduled_reason": None})
+    state.flights[data.flight_number] = cancelled_flight
+    return {"cancelled": data.flight_number, "dependents_reevaluated": []}
 
 
 def generate_schedule() -> dict:
