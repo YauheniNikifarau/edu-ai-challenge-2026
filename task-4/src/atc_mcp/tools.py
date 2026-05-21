@@ -8,6 +8,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from atc_mcp.domain.models import Flight, FlightState, OperationType, Priority, RunwayRequirements
 from atc_mcp.domain.state import state
 from atc_mcp.scheduler.algorithm import schedule
+from atc_mcp.status import build_status
 
 
 class RunwayRequirementsInput(BaseModel):
@@ -133,7 +134,8 @@ def generate_schedule() -> dict:
 
 def get_airport_status() -> dict:
     """Return structured airport operational status."""
-    raise NotImplementedError("not yet implemented")
+    assert state.config is not None, "Config must be set before calling get_airport_status"
+    return build_status(state, state.config)
 
 
 def analyze_bottleneck() -> dict:

@@ -3,8 +3,9 @@ story_id: "3.5"
 story_key: "3-5-get-airport-status-tool"
 epic: "Epic 3: Deterministic Scheduling Engine & Airport Operations"
 title: "`get_airport_status` Tool"
-status: "ready-for-dev"
+status: "completed"
 created: "2026-05-21"
+completed: "2026-05-21"
 dependencies: ["3.1", "3.2", "3.3", "3.4"]
 ---
 
@@ -278,6 +279,28 @@ cascade
 
 ### Debug Log References
 
+None
+
 ### Completion Notes List
 
+- Implemented `build_status()` in `src/atc_mcp/status.py` with all required fields
+- Peak concurrent resource calculation using event-based O(n log n) algorithm
+- Count-at-time calculation for resources at completion
+- Updated `get_airport_status()` in `src/atc_mcp/tools.py` to call `build_status()`
+- Created comprehensive test suite in `tests/test_airport_status.py` with 7 test cases:
+  1. Empty state
+  2. Queue-only (no schedule)
+  3. Fully-scheduled state
+  4. Mixed state with unschedulables
+  5. Ground crew peak math with overlapping placements
+  6. Determinism property (100 iterations)
+  7. Resource constraints at capacity
+- All 130 tests pass including 7 new tests
+- Module dependency constraints met: status.py imports only domain models, no mcp/os/time/datetime/random
+- Deterministic output verified with sorted lists and stable algorithms
+
 ### File List
+
+- `src/atc_mcp/status.py` - Implemented `build_status()` function
+- `src/atc_mcp/tools.py` - Updated `get_airport_status()` tool
+- `tests/test_airport_status.py` - Created comprehensive test suite
