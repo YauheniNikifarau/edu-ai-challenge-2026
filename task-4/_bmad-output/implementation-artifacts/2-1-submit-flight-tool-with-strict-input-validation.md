@@ -1,6 +1,6 @@
 # Story 2.1: `submit_flight` Tool with Strict Input Validation
 
-Status: ready-for-dev
+Status: review
 
 <!-- Note: Validation is optional. Run validate-create-story for quality check before dev-story. -->
 
@@ -24,36 +24,36 @@ So that the airport queue grows in a controlled, well-validated way and downstre
 
 ## Tasks / Subtasks
 
-- [ ] **Task 1 — Implement `submit_flight` tool handler in `tools.py`** (AC: 1, 2, 3, 4)
-  - [ ] Import `Flight`, `FlightState`, `OperationType`, `Priority`, `RunwayRequirements` from `atc_mcp.domain.models`.
-  - [ ] Import `state` from `atc_mcp.domain.state`.
-  - [ ] Replace the `NotImplementedError` stub with real implementation.
-  - [ ] Validate duplicate: if `state.get_flight(data.flight_number)` is not `None`, return error dict `{"error": f"flight {data.flight_number} already exists"}`.
-  - [ ] Validate dependencies: for each `dep` in `data.dependencies`, if `state.get_flight(dep)` is `None`, return error dict `{"error": f"unknown dependency: {dep}"}`.
-  - [ ] Validate self-dependency: if `data.flight_number in data.dependencies`, return error dict `{"error": "flight cannot depend on itself"}`.
-  - [ ] Convert `RunwayRequirementsInput` to `RunwayRequirements` domain type if present: `runway_requirements = RunwayRequirements(min_length_m=data.runway_requirements.min_length_m) if data.runway_requirements else None`.
-  - [ ] Construct `Flight` instance: `flight = Flight(flight_number=data.flight_number, operation_type=OperationType(data.operation_type), priority=Priority(data.priority), dependencies=data.dependencies, runway_requirements=runway_requirements, state=FlightState.queued, unscheduled_reason=None)`.
-  - [ ] Add to state: `state.add_flight(flight)`.
-  - [ ] Return canonical JSON: `{"flight": flight.model_dump(mode="json")}`. Use `mode="json"` to serialize enums as strings.
+- [x] **Task 1 — Implement `submit_flight` tool handler in `tools.py`** (AC: 1, 2, 3, 4)
+  - [x] Import `Flight`, `FlightState`, `OperationType`, `Priority`, `RunwayRequirements` from `atc_mcp.domain.models`.
+  - [x] Import `state` from `atc_mcp.domain.state`.
+  - [x] Replace the `NotImplementedError` stub with real implementation.
+  - [x] Validate duplicate: if `state.get_flight(data.flight_number)` is not `None`, return error dict `{"error": f"flight {data.flight_number} already exists"}`.
+  - [x] Validate dependencies: for each `dep` in `data.dependencies`, if `state.get_flight(dep)` is `None`, return error dict `{"error": f"unknown dependency: {dep}"}`.
+  - [x] Validate self-dependency: if `data.flight_number in data.dependencies`, return error dict `{"error": "flight cannot depend on itself"}`.
+  - [x] Convert `RunwayRequirementsInput` to `RunwayRequirements` domain type if present: `runway_requirements = RunwayRequirements(min_length_m=data.runway_requirements.min_length_m) if data.runway_requirements else None`.
+  - [x] Construct `Flight` instance: `flight = Flight(flight_number=data.flight_number, operation_type=OperationType(data.operation_type), priority=Priority(data.priority), dependencies=data.dependencies, runway_requirements=runway_requirements, state=FlightState.queued, unscheduled_reason=None)`.
+  - [x] Add to state: `state.add_flight(flight)`.
+  - [x] Return canonical JSON: `{"flight": flight.model_dump(mode="json")}`. Use `mode="json"` to serialize enums as strings.
 
-- [ ] **Task 2 — Create `tests/test_submit_flight.py`** (AC: 5)
-  - [ ] Use `valid_env` fixture from `conftest.py` to set env vars.
-  - [ ] Import `state` from `atc_mcp.domain.state` and call `state.reset()` in a `setup` fixture or at the start of each test.
-  - [ ] Import `submit_flight` from `atc_mcp.tools` and `SubmitFlightInput` for constructing inputs.
-  - [ ] **Test: `test_submit_arrival_happy_path`** — submit a simple arrival with no deps, no runway requirements; assert returned flight has `state="queued"`, `unscheduled_reason=None`, `dependencies=[]`; assert `state.get_flight(flight_number)` returns the flight.
-  - [ ] **Test: `test_submit_departure_with_dependencies`** — submit flight F1 (no deps), then submit F2 with `dependencies=["F1"]`; assert F2 returned correctly; assert `state.get_flight("F2").dependencies == ["F1"]`.
-  - [ ] **Test: `test_submit_with_runway_requirements`** — submit flight with `runway_requirements={"min_length_m": 3500}`; assert returned flight has `runway_requirements.min_length_m == 3500`.
-  - [ ] **Test: `test_duplicate_flight_rejected`** — submit F1, then submit F1 again; assert second call returns `{"error": "flight F1 already exists"}`; assert `len(state.flights) == 1`.
-  - [ ] **Test: `test_unknown_dependency_rejected`** — submit F2 with `dependencies=["F999"]` (F999 does not exist); assert returns `{"error": "unknown dependency: F999"}`; assert `state.get_flight("F2") is None`.
-  - [ ] **Test: `test_self_dependency_rejected`** — submit F1 with `dependencies=["F1"]`; assert returns `{"error": "flight cannot depend on itself"}`; assert `state.get_flight("F1") is None`.
-  - [ ] **Test: `test_extra_field_rejected`** — construct `SubmitFlightInput` with an extra field (e.g., `_unknown="x"`); assert Pydantic raises `ValidationError` with "extra fields not permitted".
-  - [ ] **Test: `test_missing_required_field`** — construct `SubmitFlightInput` without `flight_number`; assert Pydantic raises `ValidationError`.
-  - [ ] **Test: `test_invalid_enum_literal`** — construct `SubmitFlightInput` with `operation_type="takeoff"` (invalid); assert Pydantic raises `ValidationError`.
-  - [ ] Run `pytest -q tests/test_submit_flight.py` and confirm all tests pass.
+- [x] **Task 2 — Create `tests/test_submit_flight.py`** (AC: 5)
+  - [x] Use `valid_env` fixture from `conftest.py` to set env vars.
+  - [x] Import `state` from `atc_mcp.domain.state` and call `state.reset()` in a `setup` fixture or at the start of each test.
+  - [x] Import `submit_flight` from `atc_mcp.tools` and `SubmitFlightInput` for constructing inputs.
+  - [x] **Test: `test_submit_arrival_happy_path`** — submit a simple arrival with no deps, no runway requirements; assert returned flight has `state="queued"`, `unscheduled_reason=None`, `dependencies=[]`; assert `state.get_flight(flight_number)` returns the flight.
+  - [x] **Test: `test_submit_departure_with_dependencies`** — submit flight F1 (no deps), then submit F2 with `dependencies=["F1"]`; assert F2 returned correctly; assert `state.get_flight("F2").dependencies == ["F1"]`.
+  - [x] **Test: `test_submit_with_runway_requirements`** — submit flight with `runway_requirements={"min_length_m": 3500}`; assert returned flight has `runway_requirements.min_length_m == 3500`.
+  - [x] **Test: `test_duplicate_flight_rejected`** — submit F1, then submit F1 again; assert second call returns `{"error": "flight F1 already exists"}`; assert `len(state.flights) == 1`.
+  - [x] **Test: `test_unknown_dependency_rejected`** — submit F2 with `dependencies=["F999"]` (F999 does not exist); assert returns `{"error": "unknown dependency: F999"}`; assert `state.get_flight("F2") is None`.
+  - [x] **Test: `test_self_dependency_rejected`** — submit F1 with `dependencies=["F1"]`; assert returns `{"error": "flight cannot depend on itself"}`; assert `state.get_flight("F1") is None`.
+  - [x] **Test: `test_extra_field_rejected`** — construct `SubmitFlightInput` with an extra field (e.g., `_unknown="x"`); assert Pydantic raises `ValidationError` with "extra fields not permitted".
+  - [x] **Test: `test_missing_required_field`** — construct `SubmitFlightInput` without `flight_number`; assert Pydantic raises `ValidationError`.
+  - [x] **Test: `test_invalid_enum_literal`** — construct `SubmitFlightInput` with `operation_type="takeoff"` (invalid); assert Pydantic raises `ValidationError`.
+  - [x] Run `pytest -q tests/test_submit_flight.py` and confirm all tests pass.
 
-- [ ] **Task 3 — Verify integration with existing tests** (AC: 1–5)
-  - [ ] Run `pytest -q` from `task-4/` and confirm all tests pass (including `test_imports.py`, `test_config.py`, `test_domain_models.py`, `test_server_bootstrap.py`).
-  - [ ] Verify `tools.py` still does not import `mcp` directly (only `pydantic` and `domain/` imports).
+- [x] **Task 3 — Verify integration with existing tests** (AC: 1–5)
+  - [x] Run `pytest -q` from `task-4/` and confirm all tests pass (including `test_imports.py`, `test_config.py`, `test_domain_models.py`, `test_server_bootstrap.py`).
+  - [x] Verify `tools.py` still does not import `mcp` directly (only `pydantic` and `domain/` imports).
 
 ## Dev Notes
 
@@ -259,7 +259,7 @@ No `project-context.md` was discovered under `task-4/` at the time this story wa
 
 ### Agent Model Used
 
-{{agent_model_name_version}}
+Claude Sonnet 4.5 (Cascade/Windsurf)
 
 ### Debug Log References
 
@@ -269,4 +269,9 @@ No `project-context.md` was discovered under `task-4/` at the time this story wa
 
 ### File List
 
+- `src/atc_mcp/tools.py` — modified: replaced `submit_flight` stub; added domain imports
+- `tests/test_submit_flight.py` — new: 9 test cases covering all AC-5 scenarios
+
 ### Change Log
+
+- Story 2.1 implemented: `submit_flight` tool with full input validation, domain model construction, and state mutation. 9 new tests added; 71 total tests pass. (Date: 2026-05-21)

@@ -3,6 +3,9 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from atc_mcp.domain.models import Flight, FlightState, OperationType, Priority, RunwayRequirements
+from atc_mcp.domain.state import state
+
 
 class RunwayRequirementsInput(BaseModel):
     model_config = ConfigDict(extra="forbid")
@@ -25,7 +28,29 @@ class CancelFlightInput(BaseModel):
 
 def submit_flight(data: SubmitFlightInput) -> dict:
     """Submit a new flight to the queue."""
-    raise NotImplementedError("not yet implemented")
+    if state.get_flight(data.flight_number) is not None:
+        return {"error": f"flight {data.flight_number} already exists"}
+    if data.flight_number in data.dependencies:
+        return {"error": "flight cannot depend on itself"}
+    for dep in data.dependencies:
+        if state.get_flight(dep) is None:
+            return {"error": f"unknown dependency: {dep}"}
+    runway_requirements = (
+        RunwayRequirements(min_length_m=data.runway_requirements.min_length_m)
+        if data.runway_requirements
+        else None
+    )
+    flight = Flight(
+        flight_number=data.flight_number,
+        operation_type=OperationType(data.operation_type),
+        priority=Priority(data.priority),
+        dependencies=data.dependencies,
+        runway_requirements=runway_requirements,
+        state=FlightState.queued,
+        unscheduled_reason=None,
+    )
+    state.add_flight(flight)
+    return {"flight": flight.model_dump(mode="json")}
 
 
 def cancel_flight(data: CancelFlightInput) -> dict:
