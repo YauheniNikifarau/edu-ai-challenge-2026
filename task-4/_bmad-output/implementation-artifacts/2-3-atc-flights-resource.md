@@ -3,7 +3,7 @@ story_id: "2.3"
 story_key: "2-3-atc-flights-resource"
 epic: "Epic 2: Flight Queue Management"
 title: "`atc://flights` Resource"
-status: "ready-for-dev"
+status: "review"
 created: "2026-05-21"
 dependencies: ["1.3", "1.4", "2.1"]
 ---
@@ -253,18 +253,18 @@ Test cases to cover:
 
 ## Definition of Done
 
-- [ ] `flights_resource()` in `resources.py` implemented per specification
-- [ ] Reads from `state.flights` singleton
-- [ ] Sorts by `(state_rank, flight_number)` deterministically
-- [ ] Returns architecture-pinned JSON shape
-- [ ] Handles empty state correctly
-- [ ] All JSON conventions followed (snake_case, null vs [], enum strings)
-- [ ] `tests/test_flights_resource.py` created with all 7 test cases
-- [ ] All tests pass
-- [ ] Determinism property test (100 reads) passes
-- [ ] No imports of `os`, `time`, `datetime`, `random` in resource handler
-- [ ] Code follows PEP 8 naming conventions
-- [ ] No regression in existing tests
+- [x] `flights_resource()` in `resources.py` implemented per specification
+- [x] Reads from `state.flights` singleton
+- [x] Sorts by `(state_rank, flight_number)` deterministically
+- [x] Returns architecture-pinned JSON shape
+- [x] Handles empty state correctly
+- [x] All JSON conventions followed (snake_case, null vs [], enum strings)
+- [x] `tests/test_flights_resource.py` created with all 7 test cases
+- [x] All tests pass
+- [x] Determinism property test (100 reads) passes
+- [x] No imports of `os`, `time`, `datetime`, `random` in resource handler
+- [x] Code follows PEP 8 naming conventions
+- [x] No regression in existing tests
 
 ## Notes for Developer
 
@@ -313,6 +313,36 @@ The architecture explicitly calls out that unschedulable flights "must remain vi
 
 ---
 
-**Story Status:** Ready for development
+## Dev Agent Record
+
+### Implementation Plan
+
+Implemented `flights_resource()` in `resources.py` by:
+1. Adding top-level imports: `FlightState` from `domain.models`, `state` from `domain.state`
+2. Defining `_STATE_RANK` dict inside the function mapping each `FlightState` to its sort rank (scheduled=0, queued=1, unschedulable=2, cancelled=3)
+3. Sorting `state.flights.values()` with `sorted()` and a stable `(rank, flight_number)` key for byte-identical determinism
+4. Serialising via `f.model_dump()` — Pydantic v2 handles StrEnum→string, None→null, default-factory list→[]
+
+Created `tests/test_flights_resource.py` with 10 test functions (exceeds the 7-case requirement) covering: empty state, single-flight serialisation, cross-state ordering, within-state alphabetical ordering, reason string format, empty/non-empty dependencies, null/object runway requirements, and 100-read determinism property test.
+
+### Completion Notes
+
+- All 86 tests pass (76 pre-existing + 10 new), zero regressions
+- `ruff check` passes cleanly on both changed files
+- No forbidden imports (`os`, `time`, `datetime`, `random`) added
+- `_STATE_RANK` dict is local to the function to keep it scope-appropriate; the lookup is O(1) and allocation cost is negligible for a read-only resource
+
+## File List
+
+- `src/atc_mcp/resources.py` — modified: implemented `flights_resource()`, added domain imports
+- `tests/test_flights_resource.py` — created: 10 test cases
+
+## Change Log
+
+- 2026-05-21: Implemented `flights_resource()` with deterministic state-rank sorting and Pydantic v2 serialisation; created `tests/test_flights_resource.py` (10 tests)
+
+---
+
+**Story Status:** review
 **Last Updated:** 2026-05-21
 **Context Engine:** Ultimate BMad Method story context completed
