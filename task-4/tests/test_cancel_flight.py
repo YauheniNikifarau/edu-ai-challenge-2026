@@ -1,5 +1,6 @@
 import pytest
 
+from atc_mcp.config import load_config
 from atc_mcp.domain.models import Flight, FlightState, OperationType, Priority
 from atc_mcp.domain.state import state
 from atc_mcp.tools import CancelFlightInput, cancel_flight
@@ -11,7 +12,8 @@ def setup_function(function):
     state.reset()
 
 
-def test_cancel_queued_flight():
+def test_cancel_queued_flight(valid_env):
+    state.config = load_config()
     flight = Flight(
         flight_number="F1",
         operation_type=OperationType.arrival,
@@ -25,7 +27,8 @@ def test_cancel_queued_flight():
     assert result == {"cancelled": "F1", "dependents_reevaluated": []}
 
 
-def test_cancel_scheduled_flight():
+def test_cancel_scheduled_flight(valid_env):
+    state.config = load_config()
     flight = Flight(
         flight_number="F2",
         operation_type=OperationType.departure,
@@ -57,7 +60,8 @@ def test_cancel_unknown_flight_raises_error():
     assert str(exc_info.value.error.message) == "flight XYZ does not exist"
 
 
-def test_cancel_payload_shape():
+def test_cancel_payload_shape(valid_env):
+    state.config = load_config()
     flight = Flight(
         flight_number="F3",
         operation_type=OperationType.arrival,

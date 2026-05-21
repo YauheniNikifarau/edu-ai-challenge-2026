@@ -64,14 +64,33 @@ def cancel_flight(data: CancelFlightInput) -> dict:
         raise McpError(ErrorData(code=INVALID_PARAMS, message=f"flight {data.flight_number} does not exist"))
     if flight.state == FlightState.cancelled:
         raise McpError(ErrorData(code=INVALID_PARAMS, message=f"flight {data.flight_number} is already cancelled"))
+    
+    prev_states = {fn: f.state for fn, f in state.flights.items()}
+    
     cancelled_flight = flight.model_copy(update={"state": FlightState.cancelled, "unscheduled_reason": None})
     state.flights[data.flight_number] = cancelled_flight
-    return {"cancelled": data.flight_number, "dependents_reevaluated": []}
+    
+    _run_schedule()
+    
+    dependents_reevaluated = []
+    for fn, flight in state.flights.items():
+        if fn == data.flight_number:
+            continue
+        if flight.state != prev_states[fn]:
+            dependents_reevaluated.append({
+                "flight_number": fn,
+                "previous_state": str(prev_states[fn].value),
+                "new_state": str(flight.state.value),
+                "reason": flight.unscheduled_reason if flight.state == FlightState.unschedulable else None,
+            })
+    dependents_reevaluated.sort(key=lambda x: x["flight_number"])
+    
+    return {"cancelled": data.flight_number, "dependents_reevaluated": dependents_reevaluated}
 
 
-def generate_schedule() -> dict:
-    """Generate a fresh deterministic schedule."""
-    assert state.config is not None, "Config must be set before calling generate_schedule"
+def _run_schedule() -> dict:
+    """Internal shared scheduling function called by generate_schedule and cancel_flight."""
+    assert state.config is not None, "Config must be set before calling _run_schedule"
     
     result = schedule(tuple(state.flights.values()), state.config)
     state.set_latest_schedule(result)
@@ -130,6 +149,11 @@ def generate_schedule() -> dict:
             "cancelled_count": cancelled_count,
         },
     }
+
+
+def generate_schedule() -> dict:
+    """Generate a fresh deterministic schedule."""
+    return _run_schedule()
 
 
 def get_airport_status() -> dict:
