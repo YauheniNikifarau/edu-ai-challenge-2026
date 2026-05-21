@@ -32,18 +32,18 @@ dependencies: ["1.2", "1.3", "2.1"]
 
 ## Tasks / Subtasks
 
-- [ ] Task 1: Implement `scheduler/constraints.py` helpers (AC: separation, turnaround, runway match)
-  - [ ] `get_separation(prev_op: OperationType, new_op: OperationType, config: Config) -> int` — returns correct `_SEC` value
-  - [ ] `earliest_runway_start(placements: list[Placement], new_op: OperationType, floor: int, config: Config) -> int` — max over all prev placements on that runway
-  - [ ] `earliest_gate_start(placements: list[Placement], floor: int, config: Config) -> int` — max over all prev placements on that gate
-  - [ ] `feasible_runways(runways: tuple[Runway, ...], req: RunwayRequirements | None) -> list[Runway]` — filter + lex sort
-  - [ ] `runway_unschedulable_reason(n: int, runways: tuple[Runway, ...]) -> str` — exact reason string
-- [ ] Task 2: Implement `scheduler/algorithm.py` pure `schedule()` function (AC: all)
-  - [ ] Sort flights by `(0, priority_rank, flight_number)`, skip cancelled
-  - [ ] For each flight: filter runways, find earliest `(runway, gate)` pair, commit or mark unschedulable
-  - [ ] Horizon check after best_t computed
-  - [ ] Build and return `Schedule(placements, unscheduled, completion_time_seconds)`
-- [ ] Task 3: Create `tests/test_scheduler_placement.py` with all 7 required cases (AC: test cases)
+- [x] Task 1: Implement `scheduler/constraints.py` helpers (AC: separation, turnaround, runway match)
+  - [x] `get_separation(prev_op: OperationType, new_op: OperationType, config: Config) -> int` — returns correct `_SEC` value
+  - [x] `earliest_runway_start(placements: list[Placement], new_op: OperationType, floor: int, config: Config) -> int` — max over all prev placements on that runway
+  - [x] `earliest_gate_start(placements: list[Placement], floor: int, config: Config) -> int` — max over all prev placements on that gate
+  - [x] `feasible_runways(runways: tuple[Runway, ...], req: RunwayRequirements | None) -> list[Runway]` — filter + lex sort
+  - [x] `runway_unschedulable_reason(n: int, runways: tuple[Runway, ...]) -> str` — exact reason string
+- [x] Task 2: Implement `scheduler/algorithm.py` pure `schedule()` function (AC: all)
+  - [x] Sort flights by `(0, priority_rank, flight_number)`, skip cancelled
+  - [x] For each flight: filter runways, find earliest `(runway, gate)` pair, commit or mark unschedulable
+  - [x] Horizon check after best_t computed
+  - [x] Build and return `Schedule(placements, unscheduled, completion_time_seconds)`
+- [x] Task 3: Create `tests/test_scheduler_placement.py` with all 7 required cases (AC: test cases)
 
 ## Dev Notes
 
@@ -320,11 +320,16 @@ Hint for horizon test: use `monkeypatch.setenv("ATC_SCHEDULING_HORIZON_SEC", "10
 
 ### Agent Model Used
 
-{{agent_model_name_version}}
+Claude Sonnet 4.5 (Cascade)
 
 ### Debug Log References
 
 ### Completion Notes List
+
+- Implemented `scheduler/constraints.py` with 5 pure helper functions: `get_separation`, `earliest_runway_start`, `earliest_gate_start`, `feasible_runways`, `runway_unschedulable_reason`.
+- Implemented `scheduler/algorithm.py` `schedule()` pure function: greedy placement with sort by `(0, priority_rank, flight_number)`, runway feasibility check, best `(runway, gate)` pair search, horizon check, and `Schedule` return.
+- Created `tests/test_scheduler_placement.py` with all 7 AC-required test cases. All 93 tests pass (7 new + 86 existing). Ruff clean.
+- Import discipline verified: `scheduler/` imports only `atc_mcp.config`, `atc_mcp.domain.models`, and `atc_mcp.scheduler.constraints` — no `mcp`, `os`, `time`, `datetime`, or `random`.
 
 ### File List
 
@@ -334,6 +339,6 @@ Hint for horizon test: use `monkeypatch.setenv("ATC_SCHEDULING_HORIZON_SEC", "10
 
 ---
 
-**Story Status:** ready-for-dev
+**Story Status:** review
 **Last Updated:** 2026-05-21
 **Context Engine:** Ultimate BMad Method story context completed
